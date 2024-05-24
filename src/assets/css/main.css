@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* 
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+} */
+.anticon svg {
+  vertical-align: baseline;
+}
+.ant-btn-primary {
+  /* background-color: #1677ff; */
+}
+.ant-btn-default,
+.ant-btn-dashed {
+  /* background-color: white; */
+}
