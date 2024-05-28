@@ -23,7 +23,7 @@ export default defineConfig({
       ]
     }),
     AutoImport({
-      dirs: ['./src/hooks/**'],
+      dirs: ['./src/hooks/**', './src/utils/**', './src/api/**', './src/stores/**'],
       imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
       resolvers: [
         AntDesignVueResolver({
