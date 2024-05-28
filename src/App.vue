@@ -15,9 +15,9 @@ title.value = import.meta.env.VITE_APP_TITLE
   >
     <div>
       <a-layout class="h-screen">
-        <a-layout-header> </a-layout-header>
+        <!-- <a-layout-header> </a-layout-header> -->
         <a-layout>
-          <a-layout-sider>Sider</a-layout-sider>
+          <!-- <a-layout-sider>Sider</a-layout-sider> -->
           <a-layout-content class="p-4">
             <network-debugger />
           </a-layout-content>

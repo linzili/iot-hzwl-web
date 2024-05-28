@@ -1,24 +1,28 @@
 <script setup lang="ts">
-const count = 3
-const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`
+import type { connection } from '../types'
+const { token } = useToken()
+const props = defineProps<{
+  list?: connection[]
+}>()
 
-const list = ref([])
-onMounted(() => {
-  fetch(fakeDataUrl)
-    .then((res) => res.json())
-    .then((res) => {
-      list.value = res.results
-    })
-})
+const activeClient = defineModel<string>('activeClient')
+
+function handleChancgeActive(client: string) {
+  activeClient.value = client
+}
 </script>
 <template>
   <a-card title="连接列表" class="w-full h-full overflow-auto">
-    <a-list :data-source="list" :locale="{ emptyText: '暂无连接' }">
-      <template #renderItem>
-        <a-list-item class="connection-item">
-          <a-list-item-meta title="192.168.123.123:45678" description="123123">
+    <a-list :data-source="props.list" :locale="{ emptyText: '暂无连接' }">
+      <template #renderItem="{ item }">
+        <a-list-item
+          class="connection-item cursor-pointer"
+          @click="handleChancgeActive(item.client)"
+          :style="{ backgroundColor: activeClient === item.client ? token.colorFillSecondary : null }"
+        >
+          <a-list-item-meta :title="item.addr" :description="item.client">
             <template #avatar>
-              <a-tag color="processing" v-if="true">
+              <a-tag color="processing" v-if="item.online">
                 <template #icon>
                   <check-circle-outlined />
                 </template>
@@ -40,6 +44,6 @@ onMounted(() => {
 
 <style scoped>
 .connection-item {
-  padding: 0.5rem 0.25rem;
+  padding: 0.5rem 0.5rem;
 }
 </style>

@@ -1,86 +1,110 @@
 <script setup lang="ts">
+import HexUtils from '@/utils/HexUtils'
+import type { messageInfo } from '../types'
+import { message } from 'ant-design-vue'
+
 const { token } = useToken()
-import hexUtil from '@/utils/hexUtils'
 
-const data = [
-  {
-    time: '2024-05-24 09:32:27.118',
-    hex: '313233'
+const props = defineProps<{
+  messageList: messageInfo[]
+}>()
+
+const emit = defineEmits<{
+  onClear: []
+  onSend: [message: string, type: 'Hex' | 'Ascii']
+}>()
+
+const showHex = ref<boolean>()
+const showTime = ref<boolean>(true)
+const contentType = ref<'Hex' | 'Ascii'>('Hex')
+
+const messageContainer = ref<HTMLDivElement>()
+watch(
+  () => props.messageList,
+  () => {
+    nextTick(() => {
+      if (messageContainer.value) {
+        messageContainer.value.scrollTop = messageContainer.value.scrollHeight
+      }
+    })
   },
-  {
-    time: '2024-05-24 09:32:27.118',
-    hex: '313233647761'
-  },
-  {
-    time: '2024-05-24 09:32:27.118',
-    hex: '4745542f485454502f312e31e2ac85efb88f'
-  },
-  {
-    time: '2024-05-24 09:32:27.118',
-    hex: '557067726164652d496e7365637572652d52657175657374733a31e2ac85efb88f'
-  },
-  {
-    time: '2024-05-24 09:32:27.118',
-    hex: '557067726164652d496e7365637572652d52657175657374733a31e2ac85efb88f'
-  },
-  {
-    time: '2024-05-24 09:32:27.118',
-    hex: '557067726164652d496e7365637572652d52657175657374733a31e2ac85efb88f'
-  },
-  {
-    time: '2024-05-24 09:32:27.118',
-    hex: '557067726164652d496e7365637572652d52657175657374733a31e2ac85efb88f'
-  },
-  {
-    time: '2024-05-24 09:32:27.118',
-    hex: '557067726164652d496e7365637572652d52657175657374733a31e2ac85efb88f'
-  },
-  {
-    time: '2024-05-24 09:32:27.118',
-    hex: 'e4b8ade69687'
+  { deep: true }
+)
+
+const inputMessage = ref<string>()
+
+function hadnleSend() {
+  if (inputMessage.value === undefined) {
+    message.error('发送内容不能为空')
+    return
   }
-]
-
-const value1 = ref('Hex')
+  if (contentType.value === 'Hex') {
+    if (HexUtils.isHex(inputMessage.value)) {
+      emit('onSend', inputMessage.value, 'Hex')
+    } else {
+      message.error('内容不符合 HEX 格式要求，请修正后再发送')
+      return
+    }
+  } else {
+    emit('onSend', inputMessage.value, 'Ascii')
+  }
+  inputMessage.value = undefined
+}
 </script>
 <template>
   <!-- 消息内容 -->
-  <a-card class="message-container w-full h-[calc(100%_-_15rem)] mb-4 pt-6 pb-6">
-    <div class="flex flex-col">
-      <div
-        v-for="(item, index) in data"
-        :key="item.time"
-        class="p-4 mb-4 rounded-lg"
-        :class="{ 'self-end': index % 2 !== 0 }"
-        :style="{ backgroundColor: token.colorBgLayout, maxWidth: '80%', width: 'fit-content' }"
-      >
-        <a-typography-paragraph :class="{ 'text-right': index % 2 !== 0 }" :style="{ color: token.colorPrimary }">
-          {{ item.time }}
-        </a-typography-paragraph>
-        <a-typography-paragraph class="whitespace-pre-wrap">
-          {{ hexUtil.hexToString(item.hex) }}
-        </a-typography-paragraph>
-        <a-typography-text type="secondary">{{ item.hex }}</a-typography-text>
+  <a-card class="message-container w-full h-[calc(100%_-_10.5rem)] mb-2 pt-4">
+    <div ref="messageContainer" class="h-[calc(100%_-_2.5rem)] overflow-auto">
+      <div v-for="item in props.messageList" :key="item.time" class="mb-4" :style="{ maxWidth: '90%' }">
+        <div class="inline-block p-2 rounded-lg" :style="{ backgroundColor: token.colorBgLayout, maxWidth: '90%' }">
+          <a-row :gutter="16">
+            <a-col>
+              <a-typography-text strong> {{ item.type === 'receive' ? '<<' : '>>' }} </a-typography-text>
+            </a-col>
+            <a-col
+              ><a-typography-text :style="{ color: token.colorPrimary }" v-if="showTime">
+                [{{ item.time }}]
+              </a-typography-text>
+            </a-col>
+            <a-col>
+              <a-typography-text class="whitespace-pre-wrap">
+                {{ item.ascii }}
+              </a-typography-text>
+            </a-col>
+          </a-row>
+
+          <a-typography-text type="secondary" v-if="showHex">{{ item.hex }}</a-typography-text>
+        </div>
       </div>
+    </div>
+    <div class="h-8 flex justify-between items-center">
+      <a-space>
+        <a-checkbox v-model:checked="showHex">显示Hex</a-checkbox>
+        <a-checkbox v-model:checked="showTime">显示时间</a-checkbox>
+      </a-space>
+      <a-button size="small" @click="emit('onClear')">清空</a-button>
     </div>
   </a-card>
   <!-- 输入框&工具栏 -->
-  <a-card class="message-toolbar-container w-full h-56">
-    <a-space direction="vertical" class="w-full">
+  <a-card class="message-toolbar-container w-full h-40">
+    <a-space class="w-full" direction="vertical">
       <div class="h-8 flex justify-between items-center">
+        <div></div>
         <a-space>
-          <a-checkbox>显示Hex</a-checkbox>
+          <a-radio-group v-model:value="contentType" size="small">
+            <a-radio-button value="Hex">Hex</a-radio-button>
+            <a-radio-button value="Ascii">Ascii</a-radio-button>
+          </a-radio-group>
         </a-space>
-        <a-button size="small">清空</a-button>
       </div>
-      <a-textarea :autosize="{ minRows: 4, maxRows: 4 }" allow-clear :maxlength="1000" show-count />
+      <a-row :gutter="8">
+        <a-col flex="auto">
+          <a-textarea class="w-full" v-model:value="inputMessage" :autosize="{ minRows: 4, maxRows: 4 }" allow-clear />
+        </a-col>
+        <a-col>
+          <a-button class="h-full" type="primary" @click="hadnleSend">发送</a-button>
+        </a-col>
+      </a-row>
     </a-space>
-    <div class="h-8 flex justify-between">
-      <a-radio-group v-model:value="value1">
-        <a-radio-button value="Hex">Hex</a-radio-button>
-        <a-radio-button value="Ascii">Ascii</a-radio-button>
-      </a-radio-group>
-      <a-button class="items-end">发送</a-button>
-    </div>
   </a-card>
 </template>

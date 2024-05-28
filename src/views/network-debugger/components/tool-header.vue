@@ -13,12 +13,12 @@ const emit = defineEmits<{
       <span class="text-2xl font-bold">网络调试工具</span>
       <a-typography-text class="text-base">
         服务器:
-        <a-typography-text class="text-base" :strong="props.addr !== undefined" copyable>
+        <a-typography-text class="text-base" :strong="props.addr !== undefined" :copyable="props.addr !== undefined">
           {{ props.addr ? props.addr : '暂未开启' }}
         </a-typography-text>
       </a-typography-text>
 
-      <div v-if="true">
+      <div v-if="props.addr === undefined">
         <a-space>
           <a-button @click="emit('onOpen', 'tcp')">打开 tcp 连接</a-button>
           <a-button @click="emit('onOpen', 'udp')">打开 udp 连接</a-button>
