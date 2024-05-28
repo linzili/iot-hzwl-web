@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { ActionEnum, type Event, type connection, type messageInfo } from './types/'
-import HexUtils from '@/utils/HexUtils'
+import hexUtils from '@/utils/hexUtils'
 import dayjs from 'dayjs'
 
 const addr = ref()
@@ -110,8 +110,8 @@ function pushMessage(client: string, data: string, type: 'receive' | 'send', isH
   }
 
   messageList.value.get(client)!!.push({
-    hex: isHex ? data : HexUtils.stringToHex(data),
-    ascii: isHex ? HexUtils.hexToString(data) : data,
+    hex: isHex ? data : hexUtils.stringToHex(data),
+    ascii: isHex ? hexUtils.hexToString(data) : data,
     time: dayjs().format('HH:mm:ss.SSS'),
     type
   })

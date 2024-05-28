@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HexUtils from '@/utils/HexUtils'
+import hexUtils from '@/utils/hexUtils'
 import type { messageInfo } from '../types'
 import { message } from 'ant-design-vue'
 
@@ -40,7 +40,7 @@ function hadnleSend() {
     return
   }
   if (contentType.value === 'Hex') {
-    if (HexUtils.isHex(inputMessage.value)) {
+    if (hexUtils.isHex(inputMessage.value)) {
       emit('onSend', inputMessage.value, 'Hex')
     } else {
       message.error('内容不符合 HEX 格式要求，请修正后再发送')

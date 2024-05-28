@@ -1,4 +1,4 @@
-const HexUtils = {
+const hexUtils = {
   // 将字符串转换为十六进制
   stringToHex(str: string): string {
     const encoder = new TextEncoder()
@@ -26,4 +26,4 @@ const HexUtils = {
   }
 }
 
-export default HexUtils
+export default hexUtils
