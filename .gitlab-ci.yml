@@ -1,7 +1,7 @@
 image: node:18.20.3-slim
 
 variables:
-  BUILD_SHELL: 'npm run build-only'
+  BUILD_SHELL: 'npm run build'
   CACHE_DIR: 'node_modules/'
   IMAGE_NAME: '$CI_REGISTRY/$CI_PROJECT_PATH:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID'
   DOCKER_FILE_PATH: './Dockerfile'
@@ -34,6 +34,7 @@ build:
   tags:
     - build
   script:
+    - ls
     - $BUILD_SHELL
     - ls
   artifacts:
