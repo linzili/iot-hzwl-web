@@ -1,4 +1,4 @@
-image: node:18.20.3-slim
+image: node:18.19.1-slim
 
 variables:
   BUILD_SHELL: 'npm run build'
