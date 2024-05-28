@@ -47,19 +47,13 @@ function handleMessage(socket: WebSocket) {
             client: data.client!!,
             online: true
           })
+          if (activeClient.value === undefined) {
+            activeClient.value = data.client
+          }
           break
         case ActionEnum.DATA:
           if (data.client && data.data) {
-            if (!messageList.value.has(data.client)) {
-              messageList.value.set(data.client, [])
-            }
-
-            messageList.value.get(data.client)!!.push({
-              hex: data.data,
-              ascii: HexUtils.hexToString(data.data),
-              time: dayjs().format('HH:mm:ss.SSS'),
-              type: 'receive'
-            })
+            pushMessage(data.client, data.data, 'receive', data.hex)
           }
           break
         case ActionEnum.DISCONNECT:
@@ -105,14 +99,22 @@ function handleSendMessage(content: string, type: 'Hex' | 'Ascii') {
       hex: type === 'Hex'
     }
     if (sendMessage(socket.value, data)) {
-      messageList.value.get(activeClient.value)?.push({
-        hex: type === 'Hex' ? content : HexUtils.stringToHex(content),
-        ascii: type === 'Ascii' ? content : HexUtils.hexToString(content),
-        time: dayjs().format('HH:mm:ss.SSS'),
-        type: 'send'
-      })
+      pushMessage(activeClient.value, content, 'send', type === 'Hex')
     }
   }
+}
+
+function pushMessage(client: string, data: string, type: 'receive' | 'send', isHex = true) {
+  if (!messageList.value.has(client)) {
+    messageList.value.set(client, [])
+  }
+
+  messageList.value.get(client)!!.push({
+    hex: isHex ? data : HexUtils.stringToHex(data),
+    ascii: isHex ? HexUtils.hexToString(data) : data,
+    time: dayjs().format('HH:mm:ss.SSS'),
+    type
+  })
 }
 
 function handleClear() {
@@ -130,7 +132,12 @@ function handleClear() {
     </a-col>
 
     <a-col class="w-[calc(100%_-_48rem)] h-full">
-      <message-toolbar :message-list="currentMessageList" @on-send="handleSendMessage" @on-clear="handleClear" />
+      <message-toolbar
+        :enable="activeClient !== undefined && conList.find((item) => item.client === activeClient)?.online === true"
+        :message-list="currentMessageList"
+        @on-send="handleSendMessage"
+        @on-clear="handleClear"
+      />
     </a-col>
 
     <a-col class="h-full" style="width: 28rem">

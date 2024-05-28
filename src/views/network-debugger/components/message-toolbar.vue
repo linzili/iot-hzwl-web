@@ -7,6 +7,7 @@ const { token } = useToken()
 
 const props = defineProps<{
   messageList: messageInfo[]
+  enable: boolean
 }>()
 
 const emit = defineEmits<{
@@ -61,10 +62,8 @@ function hadnleSend() {
             <a-col>
               <a-typography-text strong> {{ item.type === 'receive' ? '<<' : '>>' }} </a-typography-text>
             </a-col>
-            <a-col
-              ><a-typography-text :style="{ color: token.colorPrimary }" v-if="showTime">
-                [{{ item.time }}]
-              </a-typography-text>
+            <a-col v-if="showTime">
+              <a-typography-text :style="{ color: token.colorPrimary }"> [{{ item.time }}] </a-typography-text>
             </a-col>
             <a-col>
               <a-typography-text class="whitespace-pre-wrap">
@@ -99,10 +98,16 @@ function hadnleSend() {
       </div>
       <a-row :gutter="8">
         <a-col flex="auto">
-          <a-textarea class="w-full" v-model:value="inputMessage" :autosize="{ minRows: 4, maxRows: 4 }" allow-clear />
+          <a-textarea
+            class="w-full"
+            v-model:value="inputMessage"
+            :disabled="!enable"
+            :autosize="{ minRows: 4, maxRows: 4 }"
+            allow-clear
+          />
         </a-col>
         <a-col>
-          <a-button class="h-full" type="primary" @click="hadnleSend">发送</a-button>
+          <a-button class="h-full" :disabled="!enable" type="primary" @click="hadnleSend">发送</a-button>
         </a-col>
       </a-row>
     </a-space>
