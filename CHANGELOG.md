@@ -1,3 +1,9 @@
+## [v0.0.6](https://github.com/linzili/iot-hzwl-web/compare/v0.0.6...v0.0.5)
+
+### Test
+
+- 测试工作流
+
 ## [v0.0.5](https://github.com/linzili/iot-hzwl-web/compare/v0.0.5...v0.0.4)
 
 ### Test
@@ -11,6 +17,7 @@
 - 修复changelog匹配版本号的正则表达式错误的问题
 
 ### Dependency Upgrades
+
 - 升级ci/cd、 release 流水线的依赖版本
 
 ## [v0.0.3](https://github.com/linzili/iot-hzwl-web/compare/v0.0.3...v0.0.2)
@@ -20,8 +27,8 @@
 - 修复changelog匹配版本号的正则表达式错误的问题
 
 ### Dependency Upgrades
-- 升级ci/cd、 release 流水线的依赖版本
 
+- 升级ci/cd、 release 流水线的依赖版本
 
 ## [v0.0.2](https://github.com/linzili/iot-hzwl-web/releases/tag/v0.0.1)
 
@@ -30,7 +37,8 @@
 - 修复changelog匹配版本号的正则表达式错误的问题
 
 ### Dependency Upgrades
-- 升级ci/cd、 release 流水线的依赖版本 
+
+- 升级ci/cd、 release 流水线的依赖版本
 
 ## [v0.0.1](https://github.com/linzili/iot-hzwl-web/releases/tag/v0.0.1)
 
