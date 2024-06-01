@@ -22,5 +22,3 @@
 
 - 实现网络调试工具的功能
 - 实现桌面端的打包编译
-## [1.2.2](https://github.com/vuejs/vitepress/compare/v1.2.1...v1.2.2) (2024-05-21)
-
