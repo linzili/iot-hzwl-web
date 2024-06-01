@@ -1,3 +1,9 @@
+## [v0.0.5](https://github.com/linzili/iot-hzwl-web/compare/v0.0.5...v0.0.4)
+
+### Test
+
+- 测试工作流
+
 ## [v0.0.4](https://github.com/linzili/iot-hzwl-web/compare/v0.0.4...v0.0.3)
 
 ### Bug Fixes
