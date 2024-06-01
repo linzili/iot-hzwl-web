@@ -63,7 +63,7 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: ${{ github.ref_name }}
-          releaseBody: [${{ github.ref_name }}]${{ steps.changelog.outputs.changelog }}
+          releaseBody: \\[${{ github.ref_name }}\\]${{ steps.changelog.outputs.changelog }}
           releaseDraft: false
           prerelease: false
           tauriScript: bunx tauri
