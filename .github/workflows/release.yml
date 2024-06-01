@@ -11,13 +11,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-20.04, windows-latest]
+        platform: [ macos-latest, ubuntu-20.04, windows-latest ]
 
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -47,7 +47,7 @@ jobs:
             const path = 'CHANGELOG.md';
             const tag = process.env.GITHUB_REF_NAME; 
             const content = fs.readFileSync(path, 'utf8');
-            const regex = new RegExp(`## [${tag}](.*?)(## [v|$)`, 's');
+            const regex = new RegExp(`## \\[${tag}\\](.*?)(## \\[v|$)`, 's');
             const match = content.match(regex);
             if (match) {
               const changelog = match[1].trim();
