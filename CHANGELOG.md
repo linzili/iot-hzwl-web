@@ -7,6 +7,7 @@
 ### Dependency Upgrades
 - 升级ci/cd、 release 流水线的依赖版本
 
+
 ## [v0.0.2](https://github.com/linzili/iot-hzwl-web/releases/tag/v0.0.1)
 
 ### Bug Fixes
