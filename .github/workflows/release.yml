@@ -51,7 +51,7 @@ jobs:
             const match = content.match(regex);
             if (match) {
               const changelog = match[1].trim();
-                core.setOutput('changelog', match[1].trim());
+                core.setOutput('changelog', '['+process.env.GITHUB_REF_NAME+']'+changelog);
                 } else {
               throw new Error(`No changelog entry found for version ${tag}`);
             }
@@ -63,7 +63,7 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: ${{ github.ref_name }}
-          releaseBody: \\[${{ github.ref_name }}\\]${{ steps.changelog.outputs.changelog }}
+          releaseBody: ${{ steps.changelog.outputs.changelog }}
           releaseDraft: false
           prerelease: false
           tauriScript: bunx tauri
