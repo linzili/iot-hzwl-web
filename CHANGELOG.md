@@ -1,3 +1,9 @@
+## [v0.0.10](https://github.com/linzili/iot-hzwl-web/compare/v0.0.9...v0.0.10)
+
+### Perf
+
+- 优化网络调试工具打开连接时的加载状态
+
 ## [v0.0.9](https://github.com/linzili/iot-hzwl-web/compare/v0.0.8...v0.0.9)
 
 ### Test
@@ -15,6 +21,7 @@
 ### Test
 
 - 测试工作流
+
 ## [v0.0.6](https://github.com/linzili/iot-hzwl-web/compare/v0.0.6...v0.0.5)
 
 ### Test
