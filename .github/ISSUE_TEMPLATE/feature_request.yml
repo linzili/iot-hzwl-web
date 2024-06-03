@@ -11,7 +11,7 @@ body:
   - type: textarea
     id: problem
     attributes:
-      label: 问题描述
+      label: Describe the problem
       description: A clear description of the problem this feature would solve
       placeholder: "I'm always frustrated when..."
     validations:
@@ -20,7 +20,7 @@ body:
   - type: textarea
     id: solution
     attributes:
-      label: 解决方案
+      label: "Describe the solution you'd like"
       description: A clear description of what change you would like
       placeholder: 'I would like to...'
     validations:
@@ -29,11 +29,11 @@ body:
   - type: textarea
     id: alternatives
     attributes:
-      label: 备选方案
+      label: Alternatives considered
       description: "Any alternative solutions you've considered"
 
   - type: textarea
     id: context
     attributes:
-      label: 附加内容
+      label: Additional context
       description: Add any other context about the problem here.
