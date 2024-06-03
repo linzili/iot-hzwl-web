@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   addr?: string
+  loading?: 'tcp' | 'udp'
 }>()
 const emit = defineEmits<{
   onOpen: [type: 'tcp' | 'udp']
@@ -20,8 +21,8 @@ const emit = defineEmits<{
 
       <div v-if="props.addr === undefined">
         <a-space>
-          <a-button @click="emit('onOpen', 'tcp')">打开 tcp 连接</a-button>
-          <a-button @click="emit('onOpen', 'udp')">打开 udp 连接</a-button>
+          <a-button @click="emit('onOpen', 'tcp')" :loading="props.loading === 'tcp'">打开 tcp 连接</a-button>
+          <a-button @click="emit('onOpen', 'udp')" :loading="props.loading === 'udp'">打开 udp 连接</a-button>
         </a-space>
       </div>
       <a-button v-else @click="emit('onClose')">断开连接</a-button>

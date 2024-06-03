@@ -6,35 +6,53 @@ import dayjs from 'dayjs'
 
 const addr = ref()
 const socket = ref<WebSocket>()
+const connectionLoading = ref<'tcp' | 'udp'>()
+
+// 处理打开连接
 function handleConnection(type: 'tcp' | 'udp') {
+  connectionLoading.value = type
   if (
     (socket.value && socket.value.readyState === WebSocket.OPEN) ||
     socket.value?.readyState === WebSocket.CONNECTING
   ) {
+    connectionLoading.value = undefined
     message.error('请勿重复开启连接')
     return
   }
 
   socket.value = new WebSocket(`${import.meta.env.VITE_WS_URL}/network-debugger-tool`)
   handleMessage(socket.value)
+
+  // 处理连接成功
   socket.value.onopen = () => {
     sendMessage(socket.value!!, {
       action: 'new',
       type
     })
+    connectionLoading.value = undefined
   }
 
+  // 处理关闭连接
   socket.value.onclose = () => {
     socket.value = undefined
     addr.value = undefined
     conList.value.forEach((item) => (item.online = false))
   }
+
+  // 处理异常
+  socket.value.onerror = () => {
+    connectionLoading.value = undefined
+    message.error('连接失败，请稍后再试')
+  }
 }
 
+// 连接列表
 const conList = ref<connection[]>([])
 
+// 消息列表
 const messageList = ref<Map<string, messageInfo[]>>(new Map())
 
+// 处理消息
 function handleMessage(socket: WebSocket) {
   socket.onmessage = (event) => {
     try {
@@ -72,6 +90,7 @@ function handleMessage(socket: WebSocket) {
   }
 }
 
+// 发送消息封装
 function sendMessage(socket: WebSocket, msg: any): boolean {
   if (socket.readyState === WebSocket.OPEN) {
     socket.send(JSON.stringify(msg))
@@ -82,14 +101,20 @@ function sendMessage(socket: WebSocket, msg: any): boolean {
   }
 }
 
+// 处理断开连接
 function handleDisConnection() {
-  socket.value?.close()
+  if (socket.value) {
+    if (socket.value.readyState === WebSocket.OPEN) {
+      socket.value.close()
+    }
+  }
 }
 
 const activeClient = ref()
 
 const currentMessageList = computed(() => messageList.value.get(activeClient.value) || [])
 
+// 处理发送消息
 function handleSendMessage(content: string, type: 'Hex' | 'Ascii') {
   if (socket.value) {
     const data: Event = {
@@ -124,7 +149,7 @@ function handleClear() {
 
 <template>
   <!-- 顶部工具 -->
-  <tool-header @on-open="handleConnection" @on-close="handleDisConnection" :addr="addr" />
+  <tool-header @on-open="handleConnection" @on-close="handleDisConnection" :addr="addr" :loading="connectionLoading" />
   <a-row :gutter="16" class="h-[calc(100%_-_6rem)]">
     <!-- 连接列表 -->
     <a-col class="w-80 h-full">
