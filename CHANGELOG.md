@@ -1,3 +1,9 @@
+## [v0.0.11](https://github.com/linzili/iot-hzwl-web/compare/v0.0.10...v0.0.11)
+
+### Features
+
+- 网络调试页面-消息展示方式改为选择hex和ascii [#8](https://github.com/linzili/iot-hzwl-web/issues/8)
+
 ## [v0.0.10](https://github.com/linzili/iot-hzwl-web/compare/v0.0.9...v0.0.10)
 
 ### Perf
