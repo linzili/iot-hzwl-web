@@ -1,0 +1,39 @@
+# Copyright 2019-2024 Tauri Programme within The Commons Conservancy
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
+
+name: 💡 Feature Request
+title: '[feat] '
+description: Suggest an idea
+labels: 'type: feature request'
+
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题描述
+      description: A clear description of the problem this feature would solve
+      placeholder: "I'm always frustrated when..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 解决方案
+      description: A clear description of what change you would like
+      placeholder: 'I would like to...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 备选方案
+      description: "Any alternative solutions you've considered"
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 附加内容
+      description: Add any other context about the problem here.
