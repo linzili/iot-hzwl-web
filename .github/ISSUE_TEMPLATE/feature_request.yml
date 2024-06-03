@@ -5,6 +5,7 @@
 name: 💡 Feature Request
 title: '[feat] '
 description: Suggest an idea
+projects: 'Kanban'
 labels: 'feature request'
 
 body:
