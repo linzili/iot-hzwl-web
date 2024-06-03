@@ -14,9 +14,12 @@ const emit = defineEmits<{
   onSend: [message: string, type: 'Hex' | 'Ascii']
 }>()
 
-const showHex = ref<boolean>()
+// const showHex = ref<boolean>()
 const showTime = ref<boolean>(true)
+
 const contentType = ref<'Hex' | 'Ascii'>('Hex')
+// 展示数据类型
+const showType = ref<'Hex' | 'Ascii'>('Hex')
 
 const messageContainer = ref<HTMLDivElement>()
 watch(
@@ -58,27 +61,30 @@ function hadnleSend() {
       <div v-for="item in props.messageList" :key="item.time" class="mb-4" :style="{ maxWidth: '90%' }">
         <div class="inline-block p-2 rounded-lg" :style="{ backgroundColor: token.colorBgLayout, maxWidth: '90%' }">
           <a-row :gutter="16">
-            <a-col>
-              <a-typography-text strong> {{ item.type === 'receive' ? '<<' : '>>' }} </a-typography-text>
-            </a-col>
             <a-col v-if="showTime">
               <a-typography-text :style="{ color: token.colorPrimary }"> [{{ item.time }}] </a-typography-text>
             </a-col>
             <a-col>
+              <a-typography-text strong> {{ item.type === 'receive' ? '<<' : '>>' }} </a-typography-text>
+            </a-col>
+            <a-col>
               <a-typography-text class="whitespace-pre-wrap">
-                {{ item.ascii }}
+                {{ showType === 'Ascii' ? item.ascii : item.hex }}
               </a-typography-text>
             </a-col>
           </a-row>
-
-          <a-typography-text type="secondary" v-if="showHex">{{ item.hex }}</a-typography-text>
+          <!-- <a-typography-text type="secondary" v-if="showHex">{{ item.hex }}</a-typography-text> -->
         </div>
       </div>
     </div>
     <div class="h-8 flex justify-between items-center">
       <a-space>
-        <a-checkbox v-model:checked="showHex">显示Hex</a-checkbox>
         <a-checkbox v-model:checked="showTime">显示时间</a-checkbox>
+        <a-radio-group v-model:value="showType" size="small">
+          <a-radio-button value="Hex">Hex</a-radio-button>
+          <a-radio-button value="Ascii">Ascii</a-radio-button>
+        </a-radio-group>
+        <!-- <a-checkbox v-model:checked="showHex">显示Hex</a-checkbox> -->
       </a-space>
       <a-button size="small" @click="emit('onClear')">清空</a-button>
     </div>
