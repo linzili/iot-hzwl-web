@@ -11,10 +11,7 @@ const connectionLoading = ref<'tcp' | 'udp'>()
 // 处理打开连接
 function handleConnection(type: 'tcp' | 'udp') {
   connectionLoading.value = type
-  if (
-    (socket.value && socket.value.readyState === WebSocket.OPEN) ||
-    socket.value?.readyState === WebSocket.CONNECTING
-  ) {
+  if ((socket.value && socket.value.readyState === WebSocket.OPEN) || socket.value?.readyState === WebSocket.CONNECTING) {
     connectionLoading.value = undefined
     message.error('请勿重复开启连接')
     return
@@ -145,6 +142,10 @@ function pushMessage(client: string, data: string, type: 'receive' | 'send', isH
 function handleClear() {
   messageList.value.delete(activeClient.value)
 }
+
+type tabPaneKey = 'oper' | 'history' | 'serial'
+
+const activeKey = ref<tabPaneKey>('serial')
 </script>
 
 <template>
@@ -166,7 +167,16 @@ function handleClear() {
     </a-col>
 
     <a-col class="h-full" style="width: 28rem">
-      <quick-operator />
+      <!-- 快捷操作 -->
+      <a-card class="oper-card w-full h-full" title="快捷操作">
+        <a-tabs v-model:activeKey="activeKey" class="oper-tab h-full" tab-position="top">
+          <a-tab-pane key="oper" tab="快捷指令"></a-tab-pane>
+          <a-tab-pane key="history" tab="历史发送"></a-tab-pane>
+          <a-tab-pane key="serial" tab="串口映射">
+            <!-- <serial-mapping /> -->
+          </a-tab-pane>
+        </a-tabs>
+      </a-card>
     </a-col>
   </a-row>
 </template>
