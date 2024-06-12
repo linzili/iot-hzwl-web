@@ -1,20 +1,14 @@
 <script setup lang="ts">
-import type { messageInfo } from '../types'
 import { message } from 'ant-design-vue'
 
 const { token } = useToken()
 
-const props = defineProps<{
-  messageList: messageInfo[]
-  enable: boolean
-}>()
+const networkStore = useNetworkStore()
 
-const emit = defineEmits<{
-  onClear: []
-  onSend: [message: string, type: 'Hex' | 'Ascii']
-}>()
+const enable = computed<boolean>(() => {
+  return networkStore.conList.find((item) => item.client === networkStore.activeClient?.client)?.online === true
+})
 
-// const showHex = ref<boolean>()
 const showTime = ref<boolean>(true)
 
 const contentType = ref<'Hex' | 'Ascii'>('Hex')
@@ -22,8 +16,9 @@ const contentType = ref<'Hex' | 'Ascii'>('Hex')
 const showType = ref<'Hex' | 'Ascii'>('Hex')
 
 const messageContainer = ref<HTMLDivElement>()
+// 监听消息列表变化，滚动到底部
 watch(
-  () => props.messageList,
+  () => networkStore.currentMessageList,
   () => {
     nextTick(() => {
       if (messageContainer.value) {
@@ -43,22 +38,26 @@ function hadnleSend() {
   }
   if (contentType.value === 'Hex') {
     if (isHex(inputMessage.value)) {
-      emit('onSend', inputMessage.value, 'Hex')
+      networkStore.handleSendMessage(inputMessage.value, 'Hex')
     } else {
       message.error('内容不符合 HEX 格式要求，请修正后再发送')
       return
     }
   } else {
-    emit('onSend', inputMessage.value, 'Ascii')
+    networkStore.handleSendMessage(inputMessage.value, 'Ascii')
   }
   inputMessage.value = undefined
+}
+
+function handleClear() {
+  networkStore.handleClearCurrentMessageList()
 }
 </script>
 <template>
   <!-- 消息内容 -->
   <a-card class="message-container w-full h-[calc(100%_-_10.5rem)] mb-2 pt-4">
     <div ref="messageContainer" class="h-[calc(100%_-_2.5rem)] overflow-auto">
-      <div v-for="item in props.messageList" :key="item.time" class="mb-4" :style="{ maxWidth: '90%' }">
+      <div v-for="item in networkStore.currentMessageList" :key="item.time" class="mb-4" :style="{ maxWidth: '90%' }">
         <div class="inline-block p-2 rounded-lg" :style="{ backgroundColor: token.colorBgLayout, maxWidth: '90%' }">
           <a-row :gutter="16">
             <a-col v-if="showTime">
@@ -73,7 +72,6 @@ function hadnleSend() {
               </a-typography-text>
             </a-col>
           </a-row>
-          <!-- <a-typography-text type="secondary" v-if="showHex">{{ item.hex }}</a-typography-text> -->
         </div>
       </div>
     </div>
@@ -84,9 +82,8 @@ function hadnleSend() {
           <a-radio-button value="Hex">Hex</a-radio-button>
           <a-radio-button value="Ascii">Ascii</a-radio-button>
         </a-radio-group>
-        <!-- <a-checkbox v-model:checked="showHex">显示Hex</a-checkbox> -->
       </a-space>
-      <a-button size="small" @click="emit('onClear')">清空</a-button>
+      <a-button size="small" @click="handleClear">清空</a-button>
     </div>
   </a-card>
   <!-- 输入框&工具栏 -->
@@ -103,13 +100,7 @@ function hadnleSend() {
       </div>
       <a-row :gutter="8">
         <a-col flex="auto">
-          <a-textarea
-            class="w-full"
-            v-model:value="inputMessage"
-            :disabled="!enable"
-            :autosize="{ minRows: 4, maxRows: 4 }"
-            allow-clear
-          />
+          <a-textarea class="w-full" v-model:value="inputMessage" :disabled="!enable" :autosize="{ minRows: 4, maxRows: 4 }" allow-clear />
         </a-col>
         <a-col>
           <a-button class="h-full" :disabled="!enable" type="primary" @click="hadnleSend">发送</a-button>
@@ -118,3 +109,13 @@ function hadnleSend() {
     </a-space>
   </a-card>
 </template>
+<style scoped>
+.message-container :deep(.ant-card-body) {
+  height: 100%;
+  padding: 0 1rem;
+  overflow-y: auto;
+}
+.message-toolbar-container :deep(.ant-card-body) {
+  padding-top: 0.5rem;
+}
+</style>
