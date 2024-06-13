@@ -1,3 +1,18 @@
+## [v0.0.12](https://github.com/linzili/iot-hzwl-web/compare/v0.0.11...v0.0.12)
+
+### Features
+
+- 重构连接测试组件 [#12](https://github.com/linzili/iot-hzwl-web/issues/12)
+- 实现串口工具hooks封装
+- 添加页面路由
+- 实现串口映射功能 [#11](https://github.com/linzili/iot-hzwl-web/issues/11)
+- 添加layout布局
+- 添加顶部菜单
+
+### 🦄 refactor
+
+- 移除quick-operator组件，移动到NetworkDebugger组件中，每个快捷操作创建独立组件，减少嵌套
+
 ## [v0.0.11](https://github.com/linzili/iot-hzwl-web/compare/v0.0.10...v0.0.11)
 
 ### Features
