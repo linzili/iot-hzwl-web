@@ -6,7 +6,7 @@ name: 🐞 Bug Report
 title: '[bug] '
 description: Report a bug
 projects: ['Kanban']
-labels: 'bug'
+labels: 'bug-web'
 
 body:
   - type: markdown
