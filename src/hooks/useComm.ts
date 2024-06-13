@@ -2,7 +2,7 @@ import '@/assets/js/TCTRL.min.js'
 
 const sn = '94fd99589e3317ce5921001aee9f9f070dbcc583db20d63d52441f22308532777ae632ba33a39caac537aca94a5147ce'
 
-class Comm {
+export class Comm {
   private comm?: TComm = undefined
 
   constructor(properties: CommProperties) {
@@ -13,25 +13,36 @@ class Comm {
       properties.timeout,
       properties.rts
     )
+    this.comm.OnDataIn = function (dat) {
+      //接收串口返回数据
+      if (dat.MSTAT != '') {
+        //接收串口返回的状态消息
+        console.log(dat.MSTAT)
+      }
+      if (dat.data == '') return
+      console.log(dat.data) //串口收到的数据
+    }
   }
 
   public register(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.comm?.Register(sn, (dat) => {
-        if (dat.STAT === 11) {
-          this.comm?.init((ret) => {
-            if (ret.STAT === 1) {
-              resolve()
-            } else {
-              reject(new Error('打开串口失败'))
-            }
-          })
-        } else if (dat.STAT === -99) {
-          reject(new Error('插件未安装'))
-        } else {
-          reject(new Error('串口异常'))
-        }
-      })
+      if (this.comm) {
+        this.comm.Register(sn, (dat) => {
+          if (dat.STAT === 11) {
+            this.comm!!.init((ret) => {
+              if (ret.STAT === 1) {
+                resolve()
+              } else {
+                reject(new Error('打开串口失败'))
+              }
+            })
+          } else if (dat.STAT === -99) {
+            reject(new Error('插件未安装'))
+          } else {
+            reject(new Error('串口异常'))
+          }
+        })
+      }
     })
   }
 
@@ -50,16 +61,16 @@ class Comm {
 }
 
 export function useComm() {
-  async function openComm(properties: CommProperties): Promise<Comm> {
+  async function openComm(properties: CommProperties, callback: (data: DataIn) => void): Promise<Comm> {
     return new Promise((resolve, reject) => {
       const comm = new Comm(properties)
-
+      comm.onData(callback)
       comm
         .register()
         .then(() => {
           resolve(comm)
         })
-        .catch(() => reject(new Error('打开串口失败: ')))
+        .catch(() => reject(new Error('打开串口失败')))
     })
   }
 
@@ -74,7 +85,7 @@ export function useComm() {
         } else if (dat.STAT === -99) {
           reject(new Error('插件未安装'))
         } else {
-          reject(new Error('获取串口列表失败'))
+          reject(new Error('注册失败'))
         }
       })
     })

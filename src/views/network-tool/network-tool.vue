@@ -1,6 +1,8 @@
 <script setup lang="ts">
+const networkStore = useNetworkStore()
+
 onUnmounted(() => {
-  useNetworkStore().handleStopConnection()
+  networkStore.handleStopConnection()
 })
 </script>
 
@@ -13,7 +15,8 @@ onUnmounted(() => {
       <connection-list />
     </a-col>
     <a-col class="w-[calc(100%_-_20rem)] h-full">
-      <online-debug />
+      <online-debug v-if="networkStore.mode === 'connection-test'" />
+      <serial-mapping v-else-if="networkStore.mode === 'serial-port'" />
     </a-col>
   </a-row>
 </template>

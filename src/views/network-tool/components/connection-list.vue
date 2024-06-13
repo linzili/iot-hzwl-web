@@ -4,9 +4,8 @@ const { token } = useToken()
 
 const networkStore = useNetworkStore()
 
-const disable = computed<boolean>(() => false)
 function handleChancgeActive(client: connection) {
-  if (disable.value === true) {
+  if (networkStore.comm !== undefined) {
     return
   }
   networkStore.activeClient = client
@@ -14,11 +13,11 @@ function handleChancgeActive(client: connection) {
 </script>
 <template>
   <a-card title="连接列表" class="w-full h-full overflow-auto">
-    <a-list :data-source="networkStore.conList" :locale="{ emptyText: '暂无连接' }">
+    <a-list :data-source="networkStore.connectionList" :locale="{ emptyText: '暂无连接' }">
       <template #renderItem="{ item }">
         <a-list-item
           class="connection-item"
-          :class="disable ? 'cursor-not-allowed' : 'cursor-pointer'"
+          :class="networkStore.comm !== undefined ? 'cursor-not-allowed' : 'cursor-pointer'"
           @click="handleChancgeActive(item)"
           :style="{ backgroundColor: networkStore.activeClient?.client === item.client ? token.colorFillSecondary : null }"
         >

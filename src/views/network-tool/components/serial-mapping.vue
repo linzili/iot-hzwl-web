@@ -1,104 +1,109 @@
 <script setup lang="ts">
 import type { FormInstance, Rule } from 'ant-design-vue/es/form'
-import type { connection } from '../types'
-import { message } from 'ant-design-vue'
+import { baudList, dataBitsList, parityList, stopBitsList } from '../config/config'
 
-const props = defineProps<{
-  activeClient?: connection
-}>()
+const networkStore = useNetworkStore()
 
-const emits = defineEmits<{
-  message: [payload: string]
-}>()
-
-const isConnect = defineModel<boolean>('isConnect')
-const loading = ref(false)
-
-const configRules: Record<string, Rule[]> = {}
 const formRef = ref<FormInstance>()
 
 const connectTip = ref('映射到本地服务后，此连接将被锁定，无法切换。您在此页面只能查看消息，不能发送消息。')
 
-// const socket = ref<WebSocket>()
-
-async function handleConnect() {
-  await formRef.value?.validate()
-  loading.value = true
-}
-
-function handleDisconnect() {
-  if (isConnect.value === true) {
-    isConnect.value = false
-
-    message.warning('串口映射已断开')
-  }
-}
-
-watch(
-  () => props.activeClient,
-  (newValue) => {
-    if (newValue === undefined || newValue.online === false) {
-      handleDisconnect()
-    }
-  },
-  { deep: true }
-)
-
 const config = reactive<CommProperties>({
-  com: 'com1',
-  baud: '115200',
-  dataBits: 5,
+  com: undefined,
+  baud: '9600',
+  dataBits: 8,
   parity: 'N',
   stopBits: 1,
   dateType: 'hex',
   timeout: 10,
   rts: 0
 })
+const configRules: Record<string, Rule[]> = {
+  com: [{ required: true, message: '请选择串口号' }]
+}
+const labelCol = { style: { width: '70px' } }
 
-function forwordMessage(payload: string) {
-  console.log(payload)
+async function handleOpenMapping() {
+  await formRef.value?.validate()
+
+  networkStore.handleOpenComm(config)
 }
 
-defineExpose({
-  forwordMessage
+function handleCloseMapping() {
+  networkStore.handleCloseComm()
+}
+
+function handleGetCommList(open: boolean) {
+  if (open === true) {
+    networkStore.handleGetCommList()
+  }
+}
+
+onMounted(() => {
+  networkStore.handleGetCommList()
 })
 </script>
 
 <template>
-  <a-form ref="formRef" :model="config" :rules="configRules" layout="vertical" :disabled="isConnect"> </a-form>
-  <a-tooltip v-if="activeClient?.online !== true">
-    <template #title>请选择一个在线连接后进行操作 </template>
-    <a-button type="primary" disabled> 打开串口 </a-button>
-  </a-tooltip>
-  <a-button v-else type="primary" @click="isConnect ? handleDisconnect() : handleConnect()" :loading="loading === true">
-    {{ isConnect ? '关闭' : '打开' }}串口
-  </a-button>
-  <a-tooltip>
-    <template #title>{{ connectTip }}</template>
-    <QuestionCircleOutlined class="ml-4" />
-  </a-tooltip>
+  <a-row class="h-full" :gutter="16">
+    <a-col class="w-80 h-full overflow-auto">
+      <a-card class="mb-4" title="设备配置">
+        <a-form :labelCol="labelCol">
+          <a-form-item label="波特率">
+            <a-select :options="baudList"> </a-select>
+          </a-form-item>
+        </a-form>
+      </a-card>
 
-  <!-- <a-form ref="formRef" :model="config" :rules="configRules" layout="vertical" :disabled="isConnect">
-    <a-form-item label="配置方式">
-      <a-select v-model:value="config.type">
-        <a-select-option v-for="type in configTypeList" :key="type.value" :value="type.value">{{ type.label }} </a-select-option>
-      </a-select>
-    </a-form-item>
-    <a-form-item label="地址" name="ip"><a-input v-model:value="config.ip" :disabled="!enableManual" /></a-form-item>
-    <a-form-item label="端口" name="port">
-      <a-input-number v-model:value="config.port" :disabled="!enableManual" :controls="false" class="w-full" :min="1" :max="65535" />
-    </a-form-item>
-  </a-form>
-  <a-tooltip v-if="activeClient?.online !== true">
-    <template #title>请选择一个在线连接后进行操作 </template>
-    <a-button type="primary" disabled> 打开映射 </a-button>
-  </a-tooltip>
-  <a-button v-else type="primary" @click="isConnect ? handleDisconnect() : handleConnect()" :loading="loading === true">
-    {{ isConnect ? '关闭' : '打开' }}映射
-  </a-button>
-  <a-tooltip>
-    <template #title>{{ connectTip }}</template>
-    <QuestionCircleOutlined class="ml-4" />
-  </a-tooltip> -->
-  <SerialIntroduce />
+      <a-card class="mb-4" title="串口配置">
+        <a-form :model="config" :labelCol="labelCol" ref="formRef" :rules="configRules" :disabled="networkStore.comm !== undefined">
+          <a-form-item label="串口号" name="com">
+            <a-select v-model:value="config.com" @dropdownVisibleChange="handleGetCommList">
+              <a-select-option v-for="comm in networkStore.commList" :key="comm.PName" :value="comm.PName">{{ comm.PName }}</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="波特率" name="baud">
+            <a-select v-model:value="config.baud" :options="baudList"> </a-select>
+          </a-form-item>
+          <a-form-item label="数据位" name="dataBits">
+            <a-select v-model:value="config.dataBits" :options="dataBitsList"> </a-select>
+          </a-form-item>
+          <a-form-item label="校验位" name="parity">
+            <a-select v-model:value="config.parity" :options="parityList"> </a-select>
+          </a-form-item>
+          <a-form-item label="停止位" name="stopBits">
+            <a-select v-model:value="config.stopBits" :options="stopBitsList"> </a-select>
+          </a-form-item>
+          <a-form-item label="RTS" name="rts">
+            <a-switch v-model:checked="config.rts" checked-value="1" un-checked-value="0" />
+          </a-form-item>
+        </a-form>
+        <a-tooltip v-if="networkStore.activeClient?.online !== true">
+          <template #title>请选择一个在线连接后进行操作 </template>
+          <a-button type="primary" disabled> 打开映射 </a-button>
+        </a-tooltip>
+        <a-button v-else type="primary" @click="networkStore.comm === undefined ? handleOpenMapping() : handleCloseMapping()">
+          {{ networkStore.comm === undefined ? '打开' : '关闭' }}映射
+        </a-button>
+        <a-tooltip>
+          <template #title>{{ connectTip }}</template>
+          <QuestionCircleOutlined class="ml-4" />
+        </a-tooltip>
+      </a-card>
+
+      <a-card title="目标串口">
+        <a-form :labelCol="labelCol">
+          <a-form-item label="串口号">
+            <a-select v-model:value="config.com" @dropdownVisibleChange="handleGetCommList" placeholder="请选择">
+              <a-select-option v-for="comm in networkStore.commList" :key="comm.PName" :value="comm.PName">{{ comm.PName }}</a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-form>
+      </a-card>
+    </a-col>
+    <a-col class="w-[calc(100%_-_20rem)] h-full">
+      <SerialIntroduce class="mb-4" />
+      <message-list class="h-[calc(100%_-_10rem)]" />
+    </a-col>
+  </a-row>
 </template>

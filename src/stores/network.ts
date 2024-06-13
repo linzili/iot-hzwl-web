@@ -1,11 +1,15 @@
-import { ActionEnum, type Event, type connection, type messageInfo } from '@/views/network-tool/types'
-import { message } from 'ant-design-vue'
+import type { Comm } from '@/hooks/useComm'
+import { ActionEnum, type connection, type Event, type messageInfo } from '@/views/network-tool/types'
+import { message, notification } from 'ant-design-vue'
 import dayjs from 'dayjs'
 
 export const useNetworkStore = defineStore('network-tool', () => {
   const socket = ref<WebSocket>()
   const connectionLoading = ref<'tcp' | 'udp'>()
   const addr = ref()
+  const route = useRoute()
+  const mode = computed<'connection-test' | 'serial-port'>(() => (route.path === '/connection-test' ? 'connection-test' : 'serial-port'))
+
   // 处理打开连接
   function handleOpenConnection(type: 'tcp' | 'udp') {
     connectionLoading.value = type
@@ -45,10 +49,14 @@ export const useNetworkStore = defineStore('network-tool', () => {
           case ActionEnum.DATA:
             if (data.client && data.data) {
               pushMessage(data.client, data.data, 'receive', data.hex)
+
+              if (data.client === activeClient.value?.client && comm.value !== undefined) {
+                comm.value.send(data.data)
+              }
             }
             break
           case ActionEnum.DISCONNECT:
-            conList.value.forEach((item) => {
+            connectionList.value.forEach((item) => {
               if (item.client === data.client) {
                 item.online = false
               }
@@ -65,7 +73,7 @@ export const useNetworkStore = defineStore('network-tool', () => {
       }
     }
   }
-  // 发送消息封装
+  // 发送消息到连接
   function sendMessage(msg: Event): boolean {
     if (socket.value && socket.value.readyState === WebSocket.OPEN) {
       socket.value.send(JSON.stringify(msg))
@@ -99,20 +107,20 @@ export const useNetworkStore = defineStore('network-tool', () => {
     }
   }
 
-  const conList = ref<connection[]>([])
+  const connectionList = ref<connection[]>([])
   const activeClient = ref<connection>()
   function newConnect(data: Event) {
-    conList.value.unshift({
+    connectionList.value.unshift({
       addr: data.addr!!,
       client: data.client!!,
       online: true
     })
     if (activeClient.value === undefined) {
-      activeClient.value = conList.value[0]
+      activeClient.value = connectionList.value[0]
     }
   }
   function closeAllConnection() {
-    conList.value.forEach((item) => (item.online = false))
+    connectionList.value.forEach((item) => (item.online = false))
   }
 
   const messageMap = ref<Map<string, messageInfo[]>>(new Map())
@@ -136,15 +144,78 @@ export const useNetworkStore = defineStore('network-tool', () => {
       messageMap.value.delete(activeClient.value.client)
     }
   }
+
+  const { getCommList, openComm } = useComm()
+  const commList = ref<ComPort[]>([])
+  const comm = ref<Comm>()
+  const isNotice = ref(false)
+  async function handleGetCommList() {
+    try {
+      commList.value = []
+      commList.value = await getCommList()
+    } catch (e: any) {
+      if (e.message === '插件未安装') {
+        if (isNotice.value === false) {
+          isNotice.value = true
+          notification.open({
+            message: '插件未安装',
+            description: '点击下载并安装串口映射插件后重试',
+            onClick: () => {
+              window.open('https://d.iyanhong.com/files/TCtrls.exe')
+            },
+            type: 'info',
+            duration: null
+          })
+        }
+      } else {
+        message.error('获取串口列表失败')
+      }
+    }
+  }
+  async function handleOpenComm(properties: CommProperties) {
+    try {
+      comm.value = await openComm(properties, (data) => {
+        handleSendMessage(data.data, 'Hex')
+      })
+    } catch (e: any) {
+      message.error('打开串口失败')
+    }
+  }
+  function handleCloseComm() {
+    comm.value?.close()
+    comm.value = undefined
+  }
+
+  watch(
+    () => activeClient.value,
+    (value) => {
+      if (value === undefined || value.online === false) {
+        if (comm.value !== undefined) {
+          handleCloseComm()
+          message.warning('串口映射已关闭')
+        }
+      }
+    },
+    {
+      deep: true
+    }
+  )
   return {
+    mode,
     connectionLoading,
     addr,
     handleOpenConnection,
     handleStopConnection,
     handleSendMessage,
-    conList,
+    connectionList,
     activeClient,
     currentMessageList,
-    handleClearCurrentMessageList
+    handleClearCurrentMessageList,
+    openComm,
+    commList,
+    comm,
+    handleGetCommList,
+    handleOpenComm,
+    handleCloseComm
   }
 })

@@ -4,7 +4,7 @@ const networkStore = useNetworkStore()
 <template>
   <a-card class="h-20 mb-4 p-0">
     <a-space :size="24">
-      <span class="text-xl font-bold">连接测试</span>
+      <span class="text-xl font-bold">{{ networkStore.mode === 'connection-test' ? '连接测试' : '串口映射' }}</span>
       <a-typography-text class="text-base">
         服务器:
         <a-typography-text class="text-base" :strong="networkStore.addr !== undefined" :copyable="networkStore.addr !== undefined">

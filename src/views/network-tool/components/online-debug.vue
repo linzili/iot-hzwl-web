@@ -7,7 +7,7 @@ const activeKey = ref<tabPaneKey>('oper')
 <template>
   <a-row class="h-full" :gutter="16">
     <a-col class="w-[calc(100%_-_28rem)] h-full">
-      <message-toolbar />
+      <chat-interface />
     </a-col>
 
     <a-col class="h-full" style="width: 28rem">

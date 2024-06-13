@@ -8,15 +8,22 @@ const router = createRouter({
       redirect: '/connection-test'
     },
     {
-      path: '/connection-test',
-      name: '连接测试',
-      component: () => import('@/views/network-tool/network-tool.vue')
-    },
-    {
-      path: '/serial-port',
-      name: '串口映射',
-      component: () => import('@/views/network-tool/network-tool.vue')
+      path: '/',
+      component: (() => import('@/layout/Layout.vue')),
+      children: [
+        {
+          path: '/connection-test',
+          name: '连接测试',
+          component: () => import('@/views/network-tool/network-tool.vue')
+        },
+        {
+          path: '/serial-port',
+          name: '串口映射',
+          component: () => import('@/views/network-tool/network-tool.vue')
+        }
+      ]
     }
+
   ]
 })
 

@@ -16,7 +16,7 @@ interface DataIn {
 }
 // 全局类型声明
 declare class TComm {
-  constructor(comPort: string, settings: string, format?: string, timeout?: number, rts?: number)
+  constructor(comPort?: string, settings?: string, format?: string, timeout?: number, rts?: number)
 
   Register(registrationCode: string, callback: (data: Response) => void): void
   getComList(callback: (data: { COMS: ComPort[] }) => void): void
@@ -28,7 +28,7 @@ declare class TComm {
 type baudType = '300' | '600' | '1200' | '2400' | '4800' | '9600' | '19200' | '38400' | '57600' | '115200'
 
 interface CommProperties {
-  com: string
+  com?: string
   baud: baudType
   dataBits: 5 | 6 | 7 | 8
   parity: 'N' | 'O' | 'E' | 'M' | 'S'
