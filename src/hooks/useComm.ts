@@ -1,27 +1,18 @@
-import '@/assets/js/TCTRL.min.js'
-
 const sn = '94fd99589e3317ce5921001aee9f9f070dbcc583db20d63d52441f22308532777ae632ba33a39caac537aca94a5147ce'
 
 export class Comm {
   private comm?: TComm = undefined
 
   constructor(properties: CommProperties) {
-    this.comm = new TComm(
-      properties.com,
-      `${properties.baud},${properties.parity},${properties.dataBits},${properties.stopBits}`,
-      properties.dateType,
-      properties.timeout,
-      properties.rts
-    )
-    this.comm.OnDataIn = function (dat) {
-      //接收串口返回数据
-      if (dat.MSTAT != '') {
-        //接收串口返回的状态消息
-        console.log(dat.MSTAT)
-      }
-      if (dat.data == '') return
-      console.log(dat.data) //串口收到的数据
-    }
+    import('@/assets/js/TCTRL.min.js').then(() => {
+      this.comm = new TComm(
+        properties.com,
+        `${properties.baud},${properties.parity},${properties.dataBits},${properties.stopBits}`,
+        properties.dateType,
+        properties.timeout,
+        properties.rts
+      )
+    })
   }
 
   public register(): Promise<void> {
@@ -76,17 +67,19 @@ export function useComm() {
 
   function getCommList(): Promise<ComPort[]> {
     return new Promise((resolve, reject) => {
-      const tcomm = new TComm('COM1', '9600,N,8,1', 'hex', 10, 0)
-      tcomm.Register(sn, (dat) => {
-        if (dat.STAT === 11) {
-          tcomm.getComList((data) => {
-            resolve(data.COMS)
-          })
-        } else if (dat.STAT === -99) {
-          reject(new Error('插件未安装'))
-        } else {
-          reject(new Error('注册失败'))
-        }
+      import('@/assets/js/TCTRL.min.js').then(() => {
+        const tcomm = new TComm('COM1', '9600,N,8,1', 'hex', 10, 0)
+        tcomm.Register(sn, (dat) => {
+          if (dat.STAT === 11) {
+            tcomm.getComList((data) => {
+              resolve(data.COMS)
+            })
+          } else if (dat.STAT === -99) {
+            reject(new Error('插件未安装'))
+          } else {
+            reject(new Error('注册失败'))
+          }
+        })
       })
     })
   }
