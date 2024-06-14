@@ -8,6 +8,6 @@ module.exports = {
     ecmaVersion: 'latest'
   },
   rules: {
-    'no-delete-var': 'off'
+    'vue/multi-word-component-names': 'off'
   }
 }

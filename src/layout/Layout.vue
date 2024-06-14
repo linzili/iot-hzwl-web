@@ -1,26 +1,45 @@
 <script setup lang="ts">
 import type { MenuProps } from 'ant-design-vue'
+import type { RouteRecordRaw } from 'vue-router'
 
 const { token } = useToken()
 const route = useRoute()
 const router = useRouter()
 const selectedKeys = ref<string[]>([])
-const items = ref<MenuProps['items']>([
-  {
-    key: '/network-tool',
-    label: '物联工具',
-    children: [
-      {
-        key: '/connection-test',
-        label: '连接测试'
-      },
-      {
-        key: '/serial-port',
-        label: '串口映射'
+
+const items = ref<MenuProps['items']>([])
+
+// 从路由配置动态生成菜单
+const generateMenuItems = (routes: RouteRecordRaw[]) => {
+  const menuItems: MenuProps['items'] = []
+  routes.forEach((route) => {
+    if (route.children) {
+      const children = generateMenuItems(route.children)
+      if (children.length > 0) {
+        menuItems.push({
+          key: route.path,
+          label: route.meta?.title,
+          children
+        })
       }
-    ]
+    } else {
+      menuItems.push({
+        key: route.path,
+        label: route.meta?.title
+      })
+    }
+  })
+  return menuItems
+}
+watch(
+  route,
+  (newRoute) => {
+    selectedKeys.value = [newRoute.path]
+  },
+  {
+    immediate: true
   }
-])
+)
 
 watch(selectedKeys, (value) => {
   if (value.length > 0 && value[0] !== route.path) {
@@ -29,7 +48,10 @@ watch(selectedKeys, (value) => {
 })
 
 onMounted(() => {
-  selectedKeys.value = [route.path]
+  const layoutRouter = router.getRoutes().find((route) => route.name === 'Layout')
+  if (layoutRouter && layoutRouter.children) {
+    items.value = generateMenuItems(layoutRouter.children)
+  }
 })
 </script>
 
