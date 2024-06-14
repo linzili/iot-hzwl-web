@@ -94,7 +94,7 @@ onMounted(() => {
       <a-card title="目标串口">
         <a-form :labelCol="labelCol">
           <a-form-item label="串口号">
-            <a-select v-model:value="config.com" @dropdownVisibleChange="handleGetCommList" placeholder="请选择">
+            <a-select @dropdownVisibleChange="handleGetCommList" placeholder="请选择">
               <a-select-option v-for="comm in networkStore.commList" :key="comm.PName" :value="comm.PName">{{ comm.PName }}</a-select-option>
             </a-select>
           </a-form-item>
