@@ -15,8 +15,7 @@ onUnmounted(() => {
       <connection-list />
     </a-col>
     <a-col class="w-[calc(100%_-_20rem)] h-full">
-      <online-debug v-if="networkStore.mode === 'connection-test'" />
-      <serial-mapping v-else-if="networkStore.mode === 'serial-port'" />
+      <router-view />
     </a-col>
   </a-row>
 </template>

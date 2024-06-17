@@ -7,8 +7,6 @@ export const useNetworkStore = defineStore('network-tool', () => {
   const socket = ref<WebSocket>()
   const connectionLoading = ref<'tcp' | 'udp'>()
   const addr = ref()
-  const route = useRoute()
-  const mode = computed<'connection-test' | 'serial-port'>(() => (route.path === '/connection-test' ? 'connection-test' : 'serial-port'))
 
   // 处理打开连接
   function handleOpenConnection(type: 'tcp' | 'udp') {
@@ -201,7 +199,6 @@ export const useNetworkStore = defineStore('network-tool', () => {
     }
   )
   return {
-    mode,
     connectionLoading,
     addr,
     handleOpenConnection,
