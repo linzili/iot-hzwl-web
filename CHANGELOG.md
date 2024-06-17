@@ -1,3 +1,8 @@
+## [v0.0.14](https://github.com/linzili/iot-hzwl-web/compare/v0.0.13...v0.0.14)
+
+### 🐞Fixed
+
+- 修复物联工具标题显示异常的问题
 ## [v0.0.13](https://github.com/linzili/iot-hzwl-web/compare/v0.0.12...v0.0.13)
 
 ### ✨Features
