@@ -1,6 +1,17 @@
+## [v0.0.13](https://github.com/linzili/iot-hzwl-web/compare/v0.0.12...v0.0.13)
+
+### ✨Features
+
+- 实现顶部显示顶级菜单
+- 实现通过不同的顶级菜单显示左侧二级及以下菜单
+
+### 🦄 refactor
+
+- 优化network-tools组件，通过路由跳转不同组件
+
 ## [v0.0.12](https://github.com/linzili/iot-hzwl-web/compare/v0.0.11...v0.0.12)
 
-### Features
+### ✨Features
 
 - 重构连接测试组件 [#12](https://github.com/linzili/iot-hzwl-web/issues/12)
 - 实现串口工具hooks封装
@@ -15,7 +26,7 @@
 
 ## [v0.0.11](https://github.com/linzili/iot-hzwl-web/compare/v0.0.10...v0.0.11)
 
-### Features
+### ✨Features
 
 - 网络调试页面-消息展示方式改为选择hex和ascii [#8](https://github.com/linzili/iot-hzwl-web/issues/8)
 
