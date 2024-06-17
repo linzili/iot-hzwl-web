@@ -5,30 +5,39 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'Layout',
     component: () => import('@/layout/Layout.vue'),
-    redirect: '/network-tool',
+    redirect: 'network-tool',
     children: [
       {
-        path: '/network-tool',
-        name: 'SerialPort',
-        redirect: '/connection-test',
+        path: 'network-tool',
+        name: 'NetworkTool',
+        component: () => import('@/views/network-tool/network-tool.vue'),
+        redirect: { name: 'ConnectionTest' },
         meta: {
           title: '物联工具'
         },
         children: [
           {
-            path: '/connection-test',
+            path: 'connection-test',
             name: 'ConnectionTest',
-            component: () => import('@/views/network-tool/network-tool.vue'),
+            component: () => import('@/views/network-tool/components/online-debug.vue'),
             meta: {
               title: '连接测试'
             }
           },
           {
-            path: '/serial-port',
+            path: 'serial-port',
             name: 'SerialPort',
-            component: () => import('@/views/network-tool/network-tool.vue'),
+            component: () => import('@/views/network-tool/components/serial-mapping.vue'),
             meta: {
               title: '串口映射'
+            }
+          },
+          {
+            path: 'modbus-parse',
+            name: 'ModbusParse',
+            component: () => import('@/views/network-tool/components/modbus.vue'),
+            meta: {
+              title: 'Modbus解析'
             }
           }
         ]

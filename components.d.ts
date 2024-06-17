@@ -50,6 +50,7 @@ declare module 'vue' {
     Layout: typeof import('./src/layout/Layout.vue')['default']
     MessageList: typeof import('./src/views/network-tool/components/message-list.vue')['default']
     MinusCircleOutlined: typeof import('@ant-design/icons-vue')['MinusCircleOutlined']
+    Modbus: typeof import('./src/views/network-tool/components/modbus.vue')['default']
     NetworkDebugger: typeof import('./src/views/network-tool/network-tool.vue')['default']
     NetworkTool: typeof import('./src/views/network-tool/network-tool.vue')['default']
     OnlineDebug: typeof import('./src/views/network-tool/components/online-debug.vue')['default']
