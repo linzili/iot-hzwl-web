@@ -12,3 +12,14 @@
 .ant-btn-dashed {
   /* background-color: white; */
 }
+
+.command {
+  @apply mr-4;
+  padding: 0.4em 0.6em;
+  background: rgba(150, 150, 150, 0.1);
+  border: 1px solid rgba(100, 100, 100, 0.2);
+  border-radius: 3px;
+}
+.command div {
+  @apply inline-block min-w-40 text-center;
+}
