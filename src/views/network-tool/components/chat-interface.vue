@@ -17,8 +17,9 @@ function hadnleSend() {
     return
   }
   if (contentType.value === 'Hex') {
-    if (isHex(inputMessage.value)) {
-      networkStore.handleSendMessage(inputMessage.value, 'Hex')
+    const noSpaces = inputMessage.value.replace(/\s+/g, '')
+    if (isHex(noSpaces)) {
+      networkStore.handleSendMessage(noSpaces, 'Hex')
     } else {
       message.error('内容不符合 HEX 格式要求，请修正后再发送')
       return
