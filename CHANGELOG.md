@@ -1,4 +1,15 @@
 
+## [v0.0.15](https://github.com/linzili/iot-hzwl-web/compare/v0.0.14...v0.0.15)
+
+### ✨Features
+
+- 实现Modbus数据解析的功能
+  - 通过配置生成读取命令
+  - 实现数据解析功能，可以通过配置解析数据，支持多个配置
+- 添加tailwindcss`宽度`变量
+- 添加多种数据转换方法
+- 连接测试工具发送HEX格式数据时允许输入空格，发送时自动移除
+
 ## [v0.0.14](https://github.com/linzili/iot-hzwl-web/compare/v0.0.13...v0.0.14)
 
 ### 🐞Fixed
