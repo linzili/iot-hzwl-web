@@ -132,7 +132,7 @@ export const useNetworkStore = defineStore('network-tool', () => {
     messageMap.value.get(client)!!.push({
       hex: isHex ? data : stringToHex(data),
       ascii: isHex ? hexToString(data) : data,
-      time: dayjs().format('HH:mm:ss.SSS'),
+      time: dayjs().format(HH_mm_ss_SSS),
       type
     })
   }

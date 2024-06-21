@@ -30,3 +30,25 @@ export interface messageInfo {
   time: string
   type: 'send' | 'receive'
 }
+
+type checkType = 'CRC16'
+
+export interface IReadConfig {
+  slaveAddress?: string
+  functionCode?: string
+  registerAddress?: string
+  registerCount?: string
+  checkType: checkType
+}
+
+export type parseType = 'asc' | 'desc' | 'ascAndDesc' | 'descAndAsc'
+
+export interface IParseConfig {
+  startAddress?: number
+  charCount?: number
+  charOrder?: parseType
+  dataType?: dataType
+  checkType?: checkType
+}
+
+export type dataType = 'SignedInt' | 'UnsignedInt' | 'Float' | 'Double' | 'BCD' | 'HEX'
