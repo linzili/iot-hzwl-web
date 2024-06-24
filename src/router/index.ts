@@ -51,4 +51,9 @@ const router = createRouter({
   routes
 })
 
+const title = useTitle()
+router.beforeEach((to, from, next) => {
+  title.value = (import.meta.env.VITE_APP_TITLE + ' - ' + to.meta.title) as string
+  next()
+})
 export default router

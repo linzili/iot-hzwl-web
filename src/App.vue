@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { theme } from 'ant-design-vue'
-
-const title = useTitle()
-title.value = import.meta.env.VITE_APP_TITLE
 </script>
 
 <template>
