@@ -1,18 +1,19 @@
 const sn = '94fd99589e3317ce5921001aee9f9f070dbcc583db20d63d52441f22308532777ae632ba33a39caac537aca94a5147ce'
 
+async function loadTCTRLModule() {
+  await import('@/assets/js/TCTRL.min.js')
+}
 export class Comm {
   private comm?: TComm = undefined
 
   constructor(properties: CommProperties) {
-    import('@/assets/js/TCTRL.min.js').then(() => {
-      this.comm = new TComm(
-        properties.com,
-        `${properties.baud},${properties.parity},${properties.dataBits},${properties.stopBits}`,
-        properties.dateType,
-        properties.timeout,
-        properties.rts
-      )
-    })
+    this.comm = new TComm(
+      properties.com,
+      `${properties.baud},${properties.parity},${properties.dataBits},${properties.stopBits}`,
+      properties.dateType,
+      properties.timeout,
+      properties.rts
+    )
   }
 
   public register(): Promise<void> {
@@ -53,6 +54,7 @@ export class Comm {
 
 export function useComm() {
   async function openComm(properties: CommProperties, callback: (data: DataIn) => void): Promise<Comm> {
+    await loadTCTRLModule()
     return new Promise((resolve, reject) => {
       const comm = new Comm(properties)
       comm.onData(callback)
