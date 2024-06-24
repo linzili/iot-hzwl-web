@@ -1,4 +1,16 @@
 
+## [v0.0.16](https://github.com/linzili/iot-hzwl-web/compare/v0.0.15...v0.0.16)
+
+### ✨Features
+- 根据所在菜单动态修改网站的title标题  [#31](https://github.com/linzili/iot-hzwl-web/pull/31)
+### 🐞Fixed
+- modbus解析: 移除读取测试默认值  [#32](https://github.com/linzili/iot-hzwl-web/pull/32)
+
+### 🐎CI
+- 部署机器: 修改部署到云端的机器 [#34](https://github.com/linzili/iot-hzwl-web/pull/34)
+
+### 🐳Chore
+- 依赖版本: 升级vue到3.4.30 [#35](https://github.com/linzili/iot-hzwl-web/pull/35)
 ## [v0.0.15](https://github.com/linzili/iot-hzwl-web/compare/v0.0.14...v0.0.15)
 
 ### ✨Features
