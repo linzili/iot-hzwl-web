@@ -1,13 +1,17 @@
+import dayUtil from '@/utils/day'
 import type { IParseConfig, IReadConfig } from '../types'
-import dayjs from 'dayjs'
+import { message } from 'ant-design-vue'
 
 export default function useModbusParse() {
-  const readConfig = reactive<IReadConfig>({
+  const initialReadConfig = reactive<IReadConfig>({
     slaveAddress: undefined,
     functionCode: undefined,
     registerAddress: undefined,
     registerCount: undefined,
     checkType: 'CRC16'
+  })
+  const readConfig = reactive<IReadConfig>({
+    ...initialReadConfig
   })
   const readCommand = computed(() => {
     const { slaveAddress, functionCode, registerAddress, registerCount } = readConfig
@@ -28,6 +32,25 @@ export default function useModbusParse() {
     return (command + checkCode).toUpperCase()
   })
 
+  function setLoading() {
+    loading.value = true
+    setTimeout(() => {
+      if (loading.value === true) {
+        loading.value = false
+        message.warning('读取超时')
+      }
+    }, 5000)
+  }
+
+  function handleSendReadCommand() {
+    if (readCommand.value === '') {
+      return message.warning('读取参数配置错误')
+    }
+    identified.value = readCommand.value.slice(0, 4)
+    lastSendTime.value = dayUtil().format(HH_mm_ss_SSS)
+    setLoading()
+    networkStore.handleSendMessage(readCommand.value, 'Hex')
+  }
   const networkStore = useNetworkStore()
 
   const identified = ref<string>()
@@ -39,9 +62,10 @@ export default function useModbusParse() {
         return (
           message.hex.startsWith(identified.value!!) &&
           message.type === 'receive' &&
-          dayjs(message.time, HH_mm_ss_SSS).isAfter(dayjs(lastSendTime.value, HH_mm_ss_SSS))
+          dayUtil(message.time, HH_mm_ss_SSS).isAfter(dayUtil(lastSendTime.value, HH_mm_ss_SSS))
         )
       })
+
       if (dataList.length > 0) {
         loading.value = false
         return dataList[dataList.length - 1].hex
@@ -50,14 +74,7 @@ export default function useModbusParse() {
     return ''
   })
 
-  function handleSendReadCommand() {
-    identified.value = readCommand.value.slice(0, 4)
-    lastSendTime.value = dayjs().format(HH_mm_ss_SSS)
-    loading.value = true
-    networkStore.handleSendMessage(readCommand.value, 'Hex')
-  }
-
-  const parseConfigList = ref<IParseConfig[]>([
+  const initialParseConfig: IParseConfig[] = [
     {
       startAddress: undefined,
       charCount: undefined,
@@ -65,7 +82,19 @@ export default function useModbusParse() {
       dataType: undefined,
       checkType: 'CRC16'
     }
-  ])
+  ]
+  const parseConfigList = ref<IParseConfig[]>(initialParseConfig)
+  function handleReset() {
+    Object.assign(readConfig, initialReadConfig)
+    parseConfigList.value = initialParseConfig
+    loading.value = false
+  }
+  watch(
+    () => networkStore.activeClient,
+    () => {
+      handleReset()
+    }
+  )
 
   return { readCommand, readConfig, sourceData, loading, handleSendReadCommand, parseConfigList }
 }

@@ -1,7 +1,7 @@
 import type { Comm } from '@/hooks/useComm'
+import dayUtil from '@/utils/day'
 import { ActionEnum, type connection, type Event, type messageInfo } from '@/views/network-tool/types'
 import { message, notification } from 'ant-design-vue'
-import dayjs from 'dayjs'
 
 export const useNetworkStore = defineStore('network-tool', () => {
   const socket = ref<WebSocket>()
@@ -132,7 +132,7 @@ export const useNetworkStore = defineStore('network-tool', () => {
     messageMap.value.get(client)!!.push({
       hex: isHex ? data : stringToHex(data),
       ascii: isHex ? hexToString(data) : data,
-      time: dayjs().format(HH_mm_ss_SSS),
+      time: dayUtil().format(HH_mm_ss_SSS),
       type
     })
   }
