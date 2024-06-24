@@ -1,4 +1,12 @@
 
+## [v0.0.18](https://github.com/linzili/iot-hzwl-web/compare/v0.0.17...v0.0.18)
+
+### ✨Features 
+- 添加dayUtil工具扩展dayjs
+
+### 🐞Fixed
+-  modbus发送读取指令后获取不到上报数据 [#41](https://github.com/linzili/iot-hzwl-web/issues/41)
+
 ## [v0.0.17](https://github.com/linzili/iot-hzwl-web/compare/v0.0.16...v0.0.17)
 
 ### 🐞Fixed
