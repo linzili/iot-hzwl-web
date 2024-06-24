@@ -67,21 +67,42 @@ jobs:
         run: |
           docker build -t ghcr.io/${{ github.repository }}:${{ github.ref_name }}-${{ github.run_id }} -f Dockerfile .
           docker push ghcr.io/${{ github.repository }}:${{ github.ref_name }}-${{ github.run_id }}
-
-  deployImage:
+  deploy:
     runs-on: ubuntu-latest
-    needs: buildImage
+    needs: build
     steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
+      - uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+
+      - name: executing remote
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            REPO_NAME=$(echo ${{ github.repository }} | cut -d'/' -f2)
-            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-            docker pull ghcr.io/${{ github.repository }}:${{ github.ref_name }}-${{ github.run_id }}
-            # if [ \$(docker ps -q -f name=${{ github.repository }}) ]; then docker rm -f ${{ github.repository }}; fi
-            if [ $(docker ps -q -f name=$REPO_NAME) ]; then docker rm -f $REPO_NAME; fi
-            docker run -d -p 48080:80 --name $REPO_NAME ghcr.io/${{ github.repository }}:${{ github.ref_name }}-${{ github.run_id }}
+          source: "dist/"
+          target: "/www/wwwroot/iot.sdhzwl.cn"
+
+
+#  deployImage:
+#    runs-on: ubuntu-latest
+#    needs: buildImage
+#    steps:
+#      - name: executing remote ssh commands using password
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.HOST }}
+#          username: ${{ secrets.SSH_USERNAME }}
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          script: |
+#            REPO_NAME=$(echo ${{ github.repository }} | cut -d'/' -f2)
+#            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+#            docker pull ghcr.io/${{ github.repository }}:${{ github.ref_name }}-${{ github.run_id }}
+#            # if [ \$(docker ps -q -f name=${{ github.repository }}) ]; then docker rm -f ${{ github.repository }}; fi
+#            if [ $(docker ps -q -f name=$REPO_NAME) ]; then docker rm -f $REPO_NAME; fi
+#            docker run -d -p 80:80 --name $REPO_NAME ghcr.io/${{ github.repository }}:${{ github.ref_name }}-${{ github.run_id }}
