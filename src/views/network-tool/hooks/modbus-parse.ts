@@ -3,18 +3,21 @@ import dayjs from 'dayjs'
 
 export default function useModbusParse() {
   const readConfig = reactive<IReadConfig>({
-    slaveAddress: '34',
-    functionCode: '3',
-    registerAddress: '6',
-    registerCount: '1',
+    slaveAddress: undefined,
+    functionCode: undefined,
+    registerAddress: undefined,
+    registerCount: undefined,
     checkType: 'CRC16'
   })
   const readCommand = computed(() => {
     const { slaveAddress, functionCode, registerAddress, registerCount } = readConfig
-    const slaveAddressHex = slaveAddress?.padStart(2, '0') || '00'
-    const functionCodeHex = functionCode?.padStart(2, '0') || '00'
-    const registerAddressHex = registerAddress?.padStart(4, '0') || '0000'
-    const registerCountHex = registerCount?.padStart(4, '0') || '0000'
+    if (!slaveAddress || !functionCode || !registerAddress || !registerCount) {
+      return ''
+    }
+    const slaveAddressHex = slaveAddress.padStart(2, '0')
+    const functionCodeHex = functionCode.padStart(2, '0')
+    const registerAddressHex = registerAddress.padStart(4, '0')
+    const registerCountHex = registerCount.padStart(4, '0')
 
     const command = `${slaveAddressHex}${functionCodeHex}${registerAddressHex}${registerCountHex}`
     let checkCode
@@ -46,6 +49,7 @@ export default function useModbusParse() {
     }
     return ''
   })
+
   function handleSendReadCommand() {
     identified.value = readCommand.value.slice(0, 4)
     lastSendTime.value = dayjs().format(HH_mm_ss_SSS)
