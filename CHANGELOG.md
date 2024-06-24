@@ -1,4 +1,10 @@
 
+## [v0.0.17](https://github.com/linzili/iot-hzwl-web/compare/v0.0.16...v0.0.17)
+
+### 🐞Fixed
+- 修复打开串口映射没有反应的问题  [#38](https://github.com/linzili/iot-hzwl-web/issues/38)
+
+
 ## [v0.0.16](https://github.com/linzili/iot-hzwl-web/compare/v0.0.15...v0.0.16)
 
 ### ✨Features
