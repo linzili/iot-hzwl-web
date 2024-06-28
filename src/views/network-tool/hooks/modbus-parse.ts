@@ -32,13 +32,13 @@ export default function useModbusParse() {
     return (command + checkCode).toUpperCase()
   })
 
+  let timeoutId: number
+
   function setLoading() {
     loading.value = true
-    setTimeout(() => {
-      if (loading.value === true) {
-        loading.value = false
-        message.warning('读取超时')
-      }
+    timeoutId = setTimeout(() => {
+      loading.value = false
+      message.warning('读取超时')
     }, 5000)
   }
 
@@ -51,6 +51,7 @@ export default function useModbusParse() {
     setLoading()
     networkStore.handleSendMessage(readCommand.value, 'Hex')
   }
+
   const networkStore = useNetworkStore()
 
   const identified = ref<string>()
@@ -68,6 +69,7 @@ export default function useModbusParse() {
 
       if (dataList.length > 0) {
         loading.value = false
+        clearTimeout(timeoutId)
         return dataList[dataList.length - 1].hex
       }
     }
@@ -84,11 +86,13 @@ export default function useModbusParse() {
     }
   ]
   const parseConfigList = ref<IParseConfig[]>(initialParseConfig)
+
   function handleReset() {
     Object.assign(readConfig, initialReadConfig)
     parseConfigList.value = initialParseConfig
     loading.value = false
   }
+
   watch(
     () => networkStore.activeClient,
     () => {
