@@ -15,7 +15,11 @@ onUnmounted(() => {
       <connection-list />
     </a-col>
     <a-col class="w-[calc(100%_-_20rem)] h-full">
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
     </a-col>
   </a-row>
 </template>
