@@ -1,3 +1,8 @@
+## [v0.0.20](https://github.com/linzili/iot-hzwl-web/compare/v0.0.19...v0.0.20)
+
+### 🐞Fixed
+- 修复release脚本
+
 ## [v0.0.19](https://github.com/linzili/iot-hzwl-web/compare/v0.0.18...v0.0.19)
 
 ### 🐞Fixed
