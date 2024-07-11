@@ -1,37 +1,56 @@
+## [v0.0.19](https://github.com/linzili/iot-hzwl-web/compare/v0.0.18...v0.0.19)
+
+### 🐞Fixed
+
+- 修复串口映射在切换菜单后配置丢失的问题 [#45](https://github.com/linzili/iot-hzwl-web/issues/45)
+-
+修复当读取完成后再次点击读取，正常读取有时候会出现提示读取失败的情况  [#47](https://github.com/linzili/iot-hzwl-web/issues/47)
+
+### 🐳chore
+
+- 移除tauri、修改release流水线 [#50](https://github.com/linzili/iot-hzwl-web/issues/50)
 
 ## [v0.0.18](https://github.com/linzili/iot-hzwl-web/compare/v0.0.17...v0.0.18)
 
-### ✨Features 
+### ✨Features
+
 - 添加dayUtil工具扩展dayjs
 
 ### 🐞Fixed
--  modbus发送读取指令后获取不到上报数据 [#41](https://github.com/linzili/iot-hzwl-web/issues/41)
+
+- modbus发送读取指令后获取不到上报数据 [#41](https://github.com/linzili/iot-hzwl-web/issues/41)
 
 ## [v0.0.17](https://github.com/linzili/iot-hzwl-web/compare/v0.0.16...v0.0.17)
 
 ### 🐞Fixed
-- 修复打开串口映射没有反应的问题  [#38](https://github.com/linzili/iot-hzwl-web/issues/38)
 
+- 修复打开串口映射没有反应的问题  [#38](https://github.com/linzili/iot-hzwl-web/issues/38)
 
 ## [v0.0.16](https://github.com/linzili/iot-hzwl-web/compare/v0.0.15...v0.0.16)
 
 ### ✨Features
+
 - 根据所在菜单动态修改网站的title标题  [#31](https://github.com/linzili/iot-hzwl-web/pull/31)
+
 ### 🐞Fixed
+
 - modbus解析: 移除读取测试默认值  [#32](https://github.com/linzili/iot-hzwl-web/pull/32)
 
 ### 🐎CI
+
 - 部署机器: 修改部署到云端的机器 [#34](https://github.com/linzili/iot-hzwl-web/pull/34)
 
 ### 🐳Chore
+
 - 依赖版本: 升级vue到3.4.30 [#35](https://github.com/linzili/iot-hzwl-web/pull/35)
+
 ## [v0.0.15](https://github.com/linzili/iot-hzwl-web/compare/v0.0.14...v0.0.15)
 
 ### ✨Features
 
 - 实现Modbus数据解析的功能
-  - 通过配置生成读取命令
-  - 实现数据解析功能，可以通过配置解析数据，支持多个配置
+    - 通过配置生成读取命令
+    - 实现数据解析功能，可以通过配置解析数据，支持多个配置
 - 添加tailwindcss`宽度`变量
 - 添加多种数据转换方法
 - 连接测试工具发送HEX格式数据时允许输入空格，发送时自动移除
