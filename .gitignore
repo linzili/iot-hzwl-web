@@ -25,7 +25,7 @@ auto-imports.d.ts
 *.njsproj
 *.sln
 *.sw?
-
+bun.lockb
 *.tsbuildinfo
 
 .idea/*

@@ -153,7 +153,7 @@ export const useNetworkStore = defineStore('network-tool', () => {
       commList.value = await getCommList()
     } catch (e: any) {
       if (e.message === '插件未安装') {
-        if (isNotice.value === false) {
+        if (!isNotice.value) {
           isNotice.value = true
           notification.open({
             message: '插件未安装',
@@ -187,7 +187,7 @@ export const useNetworkStore = defineStore('network-tool', () => {
   watch(
     () => activeClient.value,
     (value) => {
-      if (value === undefined || value.online === false) {
+      if (value === undefined || !value.online) {
         if (comm.value !== undefined) {
           handleCloseComm()
           message.warning('串口映射已关闭')
