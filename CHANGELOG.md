@@ -1,3 +1,11 @@
+## [v0.0.21](https://github.com/linzili/iot-hzwl-web/compare/v0.0.21...v0.0.22)
+
+### ✨Features
+- 页面底部添加备案信息 [#55](https://github.com/linzili/iot-hzwl-web/issues/55)
+- 
+### 🐳chore
+- 修改CI流水线
+
 ## [v0.0.21](https://github.com/linzili/iot-hzwl-web/compare/v0.0.20...v0.0.21)
 
 ### 🐞Fixed
