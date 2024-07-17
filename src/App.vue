@@ -4,14 +4,16 @@ import { theme } from 'ant-design-vue'
 </script>
 
 <template>
-  <a-config-provider
-    :locale="zhCN"
-    :theme="{
-      algorithm: theme.defaultAlgorithm
-    }"
-  >
-    <router-view />
-  </a-config-provider>
+  <div class="h-screen">
+    <a-config-provider
+      :locale="zhCN"
+      :theme="{
+        algorithm: theme.defaultAlgorithm
+      }"
+    >
+      <router-view />
+    </a-config-provider>
+  </div>
 </template>
 
 <style scoped></style>
