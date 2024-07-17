@@ -1,18 +1,24 @@
-## [v0.0.21](https://github.com/linzili/iot-hzwl-web/compare/v0.0.21...v0.0.22)
+
+## [v0.0.22](https://github.com/linzili/iot-hzwl-web/compare/v0.0.21...v0.0.22)
 
 ### ✨Features
+
 - 页面底部添加备案信息 [#55](https://github.com/linzili/iot-hzwl-web/issues/55)
-- 
+
 ### 🐳chore
+
 - 修改CI流水线
 
 ## [v0.0.21](https://github.com/linzili/iot-hzwl-web/compare/v0.0.20...v0.0.21)
 
 ### 🐞Fixed
+
 - 修复CI脚本
+
 ## [v0.0.20](https://github.com/linzili/iot-hzwl-web/compare/v0.0.19...v0.0.20)
 
 ### 🐞Fixed
+
 - 修复release脚本
 
 ## [v0.0.19](https://github.com/linzili/iot-hzwl-web/compare/v0.0.18...v0.0.19)
@@ -20,8 +26,7 @@
 ### 🐞Fixed
 
 - 修复串口映射在切换菜单后配置丢失的问题 [#45](https://github.com/linzili/iot-hzwl-web/issues/45)
--
-修复当读取完成后再次点击读取，正常读取有时候会出现提示读取失败的情况  [#47](https://github.com/linzili/iot-hzwl-web/issues/47)
+- 修复当读取完成后再次点击读取，正常读取有时候会出现提示读取失败的情况 [#47](https://github.com/linzili/iot-hzwl-web/issues/47)
 
 ### 🐳chore
 
@@ -41,17 +46,17 @@
 
 ### 🐞Fixed
 
-- 修复打开串口映射没有反应的问题  [#38](https://github.com/linzili/iot-hzwl-web/issues/38)
+- 修复打开串口映射没有反应的问题 [#38](https://github.com/linzili/iot-hzwl-web/issues/38)
 
 ## [v0.0.16](https://github.com/linzili/iot-hzwl-web/compare/v0.0.15...v0.0.16)
 
 ### ✨Features
 
-- 根据所在菜单动态修改网站的title标题  [#31](https://github.com/linzili/iot-hzwl-web/pull/31)
+- 根据所在菜单动态修改网站的title标题 [#31](https://github.com/linzili/iot-hzwl-web/pull/31)
 
 ### 🐞Fixed
 
-- modbus解析: 移除读取测试默认值  [#32](https://github.com/linzili/iot-hzwl-web/pull/32)
+- modbus解析: 移除读取测试默认值 [#32](https://github.com/linzili/iot-hzwl-web/pull/32)
 
 ### 🐎CI
 
