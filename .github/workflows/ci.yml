@@ -85,7 +85,8 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist/**"
+          strip_components: 1
+          source: "dist"
           target: "/www/wwwroot/iot.sdhzwl.cn/"
 
 

@@ -65,7 +65,7 @@ watch(selectedKeys, handleRouteChange)
 </script>
 
 <template>
-  <a-layout class="h-screen min-h-[940px] min-w-[1600px]">
+  <a-layout class="min-h-[940px] min-w-[1600px] h-screen">
     <a-layout-header :style="{ background: token.colorBgContainer }">
       <a-menu v-model:selected-keys="selectTopKey" mode="horizontal" :items="topMenus" />
     </a-layout-header>
@@ -73,11 +73,18 @@ watch(selectedKeys, handleRouteChange)
       <a-layout-sider :style="{ background: token.colorBgContainer }">
         <a-menu v-model:selected-keys="selectedKeys" mode="inline" :items="subMenus" />
       </a-layout-sider>
-      <a-layout-content class="p-4">
+      <a-layout-content class="p-4 pb-0">
         <router-view />
       </a-layout-content>
     </a-layout>
+    <a-layout-footer class="text-center h-10 footer">
+      <a class="hover:text-gray-400 text-gray-400" href="https://beian.miit.gov.cn/" target="_blank"> 鲁ICP备18047422号-14 </a>
+    </a-layout-footer>
   </a-layout>
 </template>
 
-<style scoped></style>
+<style scoped>
+.footer {
+  padding: 12px 0 12px;
+}
+</style>
