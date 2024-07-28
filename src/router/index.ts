@@ -41,8 +41,79 @@ const routes: RouteRecordRaw[] = [
             }
           }
         ]
+      },
+      {
+        path: 'system',
+        name: 'System',
+        redirect: { name: 'Tenant' },
+        meta: {
+          title: '系统管理'
+        },
+        children: [
+          {
+            path: 'tenant',
+            name: 'Tenant',
+            meta: {
+              title: '租户管理'
+            },
+            redirect: { name: 'TenantList' },
+            children: [
+              {
+                path: 'list',
+                name: 'TenantList',
+                component: () => import('@/views/system/tenant/Tenant.vue'),
+                meta: {
+                  title: '租户列表'
+                }
+              },
+              {
+                path: 'package',
+                name: 'TenantPackage',
+                component: () => import('@/views/system/tenantPackage/TenantPackage.vue'),
+                meta: {
+                  title: '租户套餐'
+                }
+              }
+            ]
+          },
+          {
+            path: 'user',
+            name: 'User',
+            component: () => import('@/views/system/users/User.vue'),
+            meta: {
+              title: '用户管理'
+            }
+          },
+          {
+            path: 'dict',
+            name: 'Dict',
+            component: () => import('@/views/system/dict/Dict.vue'),
+            meta: {
+              title: '字典管理'
+            }
+          },
+          {
+            path: 'dict/data/:dictType',
+            name: 'DictData',
+            component: () => import('@/views/system/dict/data/DictData.vue'),
+            meta: {
+              title: '字典数据',
+              hidden: true,
+              activeMenu: 'Dict'
+            },
+            props: true
+          }
+        ]
       }
     ]
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/login/login.vue'),
+    meta: {
+      title: '登录'
+    }
   }
 ]
 
@@ -53,7 +124,7 @@ const router = createRouter({
 
 const title = useTitle()
 router.beforeEach((to, from, next) => {
-  title.value = (import.meta.env.VITE_APP_TITLE + ' - ' + to.meta.title) as string
+  title.value = (to.meta.title + ' - ' + import.meta.env.VITE_APP_TITLE) as string
   next()
 })
 export default router
