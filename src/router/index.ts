@@ -85,6 +85,14 @@ const routes: RouteRecordRaw[] = [
             }
           },
           {
+            path: 'role',
+            name: 'Role',
+            component: () => import('@/views/system/role/Role.vue'),
+            meta: {
+              title: '角色管理'
+            }
+          },
+          {
             path: 'dict',
             name: 'Dict',
             component: () => import('@/views/system/dict/Dict.vue'),

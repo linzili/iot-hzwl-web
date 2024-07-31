@@ -3,8 +3,6 @@ import type { ItemType, MenuProps } from 'ant-design-vue'
 import type { SubMenuType } from 'ant-design-vue/es/menu/src/interface'
 import type { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router'
 
-const dictStore = useDictStore()
-
 const { token } = useToken()
 const route = useRoute()
 const router = useRouter()
@@ -13,6 +11,8 @@ const selectTopKey = ref<string[]>([])
 const openKeys = ref<string[]>([])
 const menus = ref<MenuProps['items']>([])
 const topMenus = ref<MenuProps['items']>([])
+
+const dictStore = useDictStore()
 const isSubMenuType = (item: any): item is SubMenuType => {
   return item && 'children' in item
 }

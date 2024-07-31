@@ -24,8 +24,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <DictTag type="sys_user_sex" value="2" />
-
   <page-search ref="pageSearchRef" :search-config="searchConfig" />
   <page-table
     v-model:pageParams="pageParams"

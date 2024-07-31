@@ -69,9 +69,8 @@ export const useSearchTable = <T extends PageParams, R>(params: UseSearchTablePa
           await params.afterAction()
         }
         params.pageModalRef.value.close()
-
-        search()
       } finally {
+        search()
         loading.value = false
         params.pageModalRef.value.closeLoading()
       }

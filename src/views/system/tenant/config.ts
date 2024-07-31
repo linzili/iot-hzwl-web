@@ -1,8 +1,6 @@
 import type { IPageModalConfig } from '@/components/page-modal/type'
 import type { IPageSearchConfig } from '@/components/page-search/type'
 import type { Column, IPageTableConfig } from '@/components/page-table/type'
-import type { Tenant } from '@/types/tenant'
-import { Tag } from 'ant-design-vue'
 
 const tenantStore = useTenantStore()
 const { tenantPackageSimpleList } = toRefs(tenantStore)
@@ -19,19 +17,13 @@ export const searchConfig = ref<IPageSearchConfig>({
   lineItemCount: 3
 })
 
-const computedPackageName = (record: Tenant) => {
-  return record.packageId === '0'
-    ? h(Tag, { color: 'red' }, '系统租户')
-    : h(Tag, { color: 'blue' }, tenantPackageSimpleList.value.find((it) => it.id === record.packageId)?.name)
-}
-
 const columns: Column[] = [
   { title: '租户名称', dataIndex: 'name' },
   {
     title: '租户套餐',
     dataIndex: 'packageId',
-    type: 'expression',
-    expression: computedPackageName
+    type: 'slot',
+    slotName: 'packageName'
   },
   { title: '联系人', dataIndex: 'contactName' },
   { title: '联系电话', dataIndex: 'contactPhone' },

@@ -78,6 +78,7 @@ declare module 'vue' {
     PlusCircleTwoTone: typeof import('@ant-design/icons-vue')['PlusCircleTwoTone']
     QuestionCircleOutlined: typeof import('@ant-design/icons-vue')['QuestionCircleOutlined']
     RiseOutlined: typeof import('@ant-design/icons-vue')['RiseOutlined']
+    Role: typeof import('./src/views/system/role/Role.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SafetyOutlined: typeof import('@ant-design/icons-vue')['SafetyOutlined']
