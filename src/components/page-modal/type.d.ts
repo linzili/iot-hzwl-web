@@ -77,7 +77,7 @@ type FormItemWithInputNumber = FormItemBase & {
 
 type FormItemWithSelect = FormItemBase & {
   prop: string
-  type: 'select'
+  type: 'select' | 'tree-select'
   options: Array<any> | Ref<Array<any>>
   fieldNames?: {
     label?: 'label' | string

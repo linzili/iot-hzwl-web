@@ -7,15 +7,17 @@ export const searchConfig = ref<IPageSearchConfig>({
   formItems: [
     { label: '用户名', prop: 'username', type: 'input' },
     { label: '手机号码', prop: 'phone', type: 'input' },
-    { label: '状态', prop: 'status', type: 'dict-select', dictType: DICT_TYPE.SYSTEM_COMMON_STATUS }
+    { label: '状态', prop: 'status', type: 'dict-select', dictType: DICT_TYPE.SYSTEM_COMMON_STATUS },
+    { label: '创建时间', prop: 'createTime', type: 'date-picker' }
   ],
   labelCol: { style: { width: 6 + 'rem' } },
-  lineItemCount: 3
+  lineItemCount: 4
 })
-
+const deptStore = useDeptStore()
 const columns: Column[] = [
   { title: '用户名', dataIndex: 'username' },
   { title: '用户昵称', dataIndex: 'nickname' },
+  { title: '部门', type: 'expression', expression: (record) => deptStore.getDeptName(record.deptId) },
   { title: '邮箱', dataIndex: 'email' },
   { title: '手机号码', dataIndex: 'phone' },
   { title: '状态', dataIndex: 'status', type: 'switch', checkedValue: 0, unCheckedValue: 1 },
@@ -41,6 +43,7 @@ export const modalConfig: IPageModalConfig = {
     { prop: 'nickname', label: '用户昵称', type: 'input' },
     { prop: 'password', label: '用户密码', type: 'input', mode: 'new' },
     { prop: 'sex', label: '性别', type: 'dict-radio', dictType: DICT_TYPE.SYSTEM_USER_SEX },
+    { prop: 'deptId', label: '部门', type: 'tree-select', options: deptStore.getSimpleDeptTreeList(), fieldNames: { label: 'name', value: 'id' } },
     { prop: 'phone', label: '手机号码', type: 'input' },
     { prop: 'status', label: '状态', type: 'dict-radio', dictType: DICT_TYPE.SYSTEM_COMMON_STATUS },
     { prop: 'email', label: '邮箱', type: 'input' },

@@ -8,11 +8,12 @@ import type { Ref } from 'vue'
 export interface UseSearchTableParams<T, R> {
   pageSearchRef: Ref<InstanceType<typeof PageSearch>>
   pageModalRef: Ref<InstanceType<typeof PageModal>>
-  fetchData?: (params: T) => Promise<Data<PageResult<R>>>
+  fetchData?: (params: T) => Promise<Data<PageResult<R> | Array<R>>>
   onNew?: (data: R) => Promise<Data<number>>
   onEdit?: (data: R) => Promise<Data<boolean>>
   onDelete?: (id: number) => Promise<Data<boolean>>
   afterAction?: () => Promise<void>
+  enablePagination?: boolean
 }
 
 export const useSearchTable = <T extends PageParams, R>(params: UseSearchTableParams<T, R>) => {
@@ -28,10 +29,14 @@ export const useSearchTable = <T extends PageParams, R>(params: UseSearchTablePa
     if (params.fetchData !== undefined) {
       loading.value = true
       try {
-        const { data } = await params.fetchData({ ...value, ...pageParams } as T)
-
-        dataList.value = data.list
-        total.value = data.total
+        if (params.enablePagination === false) {
+          const { data } = await params.fetchData(value as T)
+          dataList.value = data as R[]
+        } else {
+          const { data } = await params.fetchData({ ...value, ...pageParams } as T)
+          dataList.value = (data as PageResult<R>).list
+          total.value = (data as PageResult<R>).total
+        }
       } finally {
         loading.value = false
       }

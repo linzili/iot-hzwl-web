@@ -1,3 +1,11 @@
+## [v0.0.24](https://github.com/linzili/iot-hzwl-web/compare/v0.0.23...v0.0.24)
+
+### ✨Features
+
+- 添加部门管理功能
+- pageModal添加tree-select类型
+- 用户管理添加部门属性
+- useSearchTable添加是否分页模式
 
 ## [v0.0.23](https://github.com/linzili/iot-hzwl-web/compare/v0.0.23...v0.0.23)
 

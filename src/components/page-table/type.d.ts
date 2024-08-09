@@ -40,6 +40,7 @@ export type Column = BaseColumn | ExpressionColumn | SlotColumn | SwitchColumn |
 
 export interface IPageTableConfig {
   columns?: Column[]
+  rowKey?: string
   header?: {
     title: string
     btnShow?: boolean

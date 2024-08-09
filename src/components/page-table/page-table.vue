@@ -44,8 +44,10 @@ function handleChange(pagination: TablePaginationConfig) {
 
     <!-- table -->
     <a-table
+      :rorKey="tableConfig.rowKey"
       :data-source="dataList"
       :loading
+      defaultExpandAllRows
       :pagination="
         tableConfig.showPagination === false
           ? false

@@ -90,6 +90,15 @@ defineExpose({
               :fieldNames="{ label: item.fieldNames?.label || 'label', value: item.fieldNames?.value || 'value' }"
               :options="item.options"
             />
+
+            <a-tree-select
+              v-else-if="item.type === 'tree-select'"
+              v-model:value="formData[item.prop]"
+              :fieldNames="{ label: item.fieldNames?.label || 'label', value: item.fieldNames?.value || 'value' }"
+              :tree-data="item.options"
+              tree-default-expand-all
+            />
+
             <a-select
               v-else-if="item.type === 'dict-select'"
               v-model:value="formData[item.prop]"

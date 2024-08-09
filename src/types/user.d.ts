@@ -73,3 +73,17 @@ export interface UserPageReq extends PageParams {
    */
   createTime?: Date[]
 }
+
+/**
+ * UserSimpleRespVO，管理后台 - 用户精简信息 Response VO
+ */
+export interface UserSimpleRespVO {
+  /**
+   * 用户编号
+   */
+  id: number
+  /**
+   * 用户昵称
+   */
+  nickname: string
+}

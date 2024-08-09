@@ -93,6 +93,14 @@ const routes: RouteRecordRaw[] = [
             }
           },
           {
+            path: 'dept',
+            name: 'Dept',
+            component: () => import('@/views/system/dept/Dept.vue'),
+            meta: {
+              title: '部门管理'
+            }
+          },
+          {
             path: 'dict',
             name: 'Dict',
             component: () => import('@/views/system/dict/Dict.vue'),
