@@ -2,7 +2,7 @@ import type { SimpleDept, SimpleDeptTree } from '@/types/dept'
 
 export const useDeptStore = defineStore('dept', () => {
   const deptSimpleTreeList = ref<SimpleDeptTree[]>([{ id: 0, name: '顶级部门', children: [] }])
-  const deptSimpleList = ref<SimpleDept[]>([])
+  const deptSimpleList = ref<SimpleDept[]>()
 
   const getSimpleDeptTreeListAction = async () => {
     const { data } = await getSimpleDeptTreeListApi()
@@ -22,13 +22,13 @@ export const useDeptStore = defineStore('dept', () => {
   }
 
   function getSimpleDeptList() {
-    if (deptSimpleList.value.length === 0) {
+    if (deptSimpleList.value === undefined) {
       getSimpleDeptListAction()
     }
     return deptSimpleList
   }
   function getDeptName(deptId: number) {
-    return getSimpleDeptList().value.find((item) => item.id === deptId)?.name
+    return getSimpleDeptList().value?.find((item) => item.id === deptId)?.name
   }
   return {
     deptSimpleTreeList,

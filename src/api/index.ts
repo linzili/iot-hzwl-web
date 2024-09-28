@@ -21,7 +21,10 @@ const defHttp = new Request(
   (res) => {
     if (res.data.code === 200) return res.data
     else if (res.data.code === 401) {
-      // const loginStore = useLoginStore()
+      const loginStore = useLoginStore()
+      loginStore.delToken()
+      message.error(res.data.msg || '登录失效，请重新登录')
+      location.reload()
     } else {
       message.error(res.data.msg)
       return Promise.reject(res.data.msg || '网络错误，请稍后再试')

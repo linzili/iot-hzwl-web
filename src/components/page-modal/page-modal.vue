@@ -62,58 +62,64 @@ defineExpose({
     destroyOnClose
     @ok="handleConfirm"
   >
-    <a-form ref="formRef" :labelAlgin="modalConfig.labelAlight" :labelCol="modalConfig.labelCol" :model="formData" :rules="modalConfig.formRule">
-      <template v-for="item in modalConfig.formItems" :key="item.prop">
-        <template v-if="item.mode === undefined || item.mode === type">
-          <a-form-item :label="item.label" :name="item.prop">
-            <a-input v-if="item.type === 'input'" v-model:value="formData[item.prop]" />
-            <a-radio-group v-else-if="item.type === 'radio'" v-model:value="formData[item.prop]">
-              <a-radio
-                v-for="radio in item.options"
-                :key="radio[item.fieldNames?.value || 'value']"
-                :value="radio[item.fieldNames?.value || 'value']"
-              >
-                {{ radio[item.fieldNames?.label || 'label'] }}
-              </a-radio>
-            </a-radio-group>
-            <a-input-number
-              v-else-if="item.type === 'input-number'"
-              v-model:value="formData[item.prop]"
-              :max="item.max"
-              :min="item.min"
-              class="w-full"
-            />
-            <a-date-picker v-else-if="item.type === 'date-picker'" v-model:value="formData[item.prop]" valueFormat="YYYY-MM-DD HH:mm:ss" />
-            <a-select
-              v-else-if="item.type === 'select'"
-              v-model:value="formData[item.prop]"
-              :fieldNames="{ label: item.fieldNames?.label || 'label', value: item.fieldNames?.value || 'value' }"
-              :options="item.options"
-            />
+    <div class="mt-4">
+      <a-form ref="formRef" :labelAlgin="modalConfig.labelAlight" :labelCol="modalConfig.labelCol" :model="formData" :rules="modalConfig.formRule">
+        <template v-for="item in modalConfig.formItems" :key="item.prop">
+          <template v-if="item.type !== 'none'">
+            <template v-if="item.type === 'slot'">
+              <slot :name="item.slotName" :formData="formData" :item="item" />
+            </template>
 
-            <a-tree-select
-              v-else-if="item.type === 'tree-select'"
-              v-model:value="formData[item.prop]"
-              :fieldNames="{ label: item.fieldNames?.label || 'label', value: item.fieldNames?.value || 'value' }"
-              :tree-data="item.options"
-              tree-default-expand-all
-            />
+            <template v-else-if="item.mode === undefined || item.mode === type">
+              <a-form-item :label="item.label" :name="item.prop">
+                <a-input v-if="item.type === 'input'" v-model:value="formData[item.prop]" />
+                <a-radio-group v-else-if="item.type === 'radio'" v-model:value="formData[item.prop]">
+                  <a-radio
+                    v-for="radio in item.options"
+                    :key="radio[item.fieldNames?.value || 'value']"
+                    :value="radio[item.fieldNames?.value || 'value']"
+                  >
+                    {{ radio[item.fieldNames?.label || 'label'] }}
+                  </a-radio>
+                </a-radio-group>
+                <a-input-number
+                  v-else-if="item.type === 'input-number'"
+                  v-model:value="formData[item.prop]"
+                  :max="item.max"
+                  :min="item.min"
+                  class="w-full"
+                />
+                <a-date-picker v-else-if="item.type === 'date-picker'" v-model:value="formData[item.prop]" valueFormat="YYYY-MM-DD HH:mm:ss" />
+                <a-select
+                  v-else-if="item.type === 'select'"
+                  v-model:value="formData[item.prop]"
+                  :fieldNames="{ label: item.fieldNames?.label || 'label', value: item.fieldNames?.value || 'value' }"
+                  :options="item.options"
+                />
 
-            <a-select
-              v-else-if="item.type === 'dict-select'"
-              v-model:value="formData[item.prop]"
-              :fieldNames="{ label: item.fieldNames?.label || 'label', value: item.fieldNames?.value || 'value' }"
-              :options="getDictOptions(item.dictType)"
-            />
-            <a-radio-group v-else-if="item.type === 'dict-radio'" v-model:value="formData[item.prop]">
-              <a-radio v-for="radio in getDictOptions(item.dictType)" :key="radio.value" :value="radio.value">
-                {{ radio.label }}
-              </a-radio>
-            </a-radio-group>
-            <slot v-else-if="item.type === 'slot'" :name="item.slotName" />
-          </a-form-item>
+                <a-tree-select
+                  v-else-if="item.type === 'tree-select'"
+                  v-model:value="formData[item.prop]"
+                  :fieldNames="{ label: item.fieldNames?.label || 'label', value: item.fieldNames?.value || 'value' }"
+                  :tree-data="item.options"
+                />
+
+                <a-select
+                  v-else-if="item.type === 'dict-select'"
+                  v-model:value="formData[item.prop]"
+                  :fieldNames="{ label: item.fieldNames?.label || 'label', value: item.fieldNames?.value || 'value' }"
+                  :options="getDictOptions(item.dictType)"
+                />
+                <a-radio-group v-else-if="item.type === 'dict-radio'" v-model:value="formData[item.prop]">
+                  <a-radio v-for="radio in getDictOptions(item.dictType)" :key="radio.value" :value="radio.value">
+                    {{ radio.label }}
+                  </a-radio>
+                </a-radio-group>
+              </a-form-item>
+            </template>
+          </template>
         </template>
-      </template>
-    </a-form>
+      </a-form>
+    </div>
   </a-modal>
 </template>

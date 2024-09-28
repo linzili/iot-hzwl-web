@@ -1,6 +1,7 @@
-import type { SimpleTenantPackage } from '@/types/tenant'
+import type { SimpleTenant, SimpleTenantPackage } from '@/types/tenant'
 
 export const useTenantStore = defineStore('tenant', () => {
+  const tenantInfo = ref<SimpleTenant>()
   const tenantPackageSimpleList = ref<SimpleTenantPackage[]>([])
 
   const getSimpleTenantPackageListAction = async () => {
@@ -9,8 +10,15 @@ export const useTenantStore = defineStore('tenant', () => {
     tenantPackageSimpleList.value.push({ id: '0', name: '系统租户' })
   }
 
+  const getTenantByWebsiteAction = async (website: string) => {
+    const { data } = await getSimpleTenantByWebsite({ website })
+    tenantInfo.value = data
+  }
+
   return {
     tenantPackageSimpleList,
-    getSimpleTenantPackageListAction
+    tenantInfo,
+    getSimpleTenantPackageListAction,
+    getTenantByWebsiteAction
   }
 })

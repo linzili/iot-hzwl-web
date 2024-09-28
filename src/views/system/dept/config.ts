@@ -36,7 +36,7 @@ export const modalConfig = ref<IPageModalConfig>({
     { prop: 'id', type: 'none' },
     {
       prop: 'parentId',
-      label: '上级名称',
+      label: '上级部门',
       type: 'tree-select',
       options: deptStore.getSimpleDeptTreeList(),
       fieldNames: { label: 'name', value: 'id' }

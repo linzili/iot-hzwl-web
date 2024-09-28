@@ -88,6 +88,11 @@ type FormItemWithSelect = FormItemBase & {
 type FormItemWithSlot = FormItemBase & {
   type: 'slot'
   slotName: string
+  options?: Array<any> | Ref<Array<any>>
+  fieldNames?: {
+    label?: 'label' | string
+    value?: 'value' | string
+  }
 }
 
 type FormItemWithDict = FormItemBase & {

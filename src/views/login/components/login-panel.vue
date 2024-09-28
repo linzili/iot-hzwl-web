@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 const loginStore = useLoginStore()
+const tenantStore = useTenantStore()
 const { loginForm, loginBtnDisabled, captcha } = toRefs(loginStore)
 
 onMounted(() => {
   loginStore.getCaptchaAction()
+  tenantStore.getTenantByWebsiteAction(window.parent.location.hostname || window.location.hostname)
 })
 </script>
 

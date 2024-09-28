@@ -1,7 +1,7 @@
 import type { PageResult } from '@/types/global'
 import defHttp from '..'
 
-import type { Tenant, TenantPageReq } from '@/types/tenant'
+import type { SimpleTenant, Tenant, TenantPageReq } from '@/types/tenant'
 
 const prefix = '/system/tenant'
 
@@ -9,3 +9,4 @@ export const getTenantListApi = (params: TenantPageReq) => defHttp.get<PageResul
 export const deleteTenantApi = (id: number) => defHttp.delete<boolean>(`${prefix}/${id}`)
 export const editTenantApi = (data: Tenant) => defHttp.put<boolean>(`${prefix}`, data)
 export const newTenantApi = (data: Tenant) => defHttp.post<number>(`${prefix}`, data)
+export const getSimpleTenantByWebsite = (params: { website: string }) => defHttp.get<SimpleTenant>(`${prefix}/get-by-website`, params)

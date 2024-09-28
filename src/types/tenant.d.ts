@@ -68,6 +68,17 @@ export interface TenantPackage {
   status: Status
 }
 
+export interface SimpleTenant {
+  /**
+   * 租户编号
+   */
+  id: number
+  /**
+   * 租户名称
+   */
+  name: string
+}
+
 export interface TenantPageReq extends PageParams {
   /**
    * 租户名,模糊匹配

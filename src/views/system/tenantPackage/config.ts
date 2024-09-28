@@ -37,6 +37,7 @@ export const modalConfig: IPageModalConfig = {
   formItems: [
     { prop: 'id', type: 'none' },
     { prop: 'name', label: '套餐名称', type: 'input' },
+    { prop: 'menuIds', label: '菜单权限', type: 'slot', slotName: 'menu' },
     { prop: 'status', label: '状态', type: 'dict-radio', dictType: DICT_TYPE.SYSTEM_COMMON_STATUS },
     { prop: 'remark', label: '备注', type: 'input' }
   ],

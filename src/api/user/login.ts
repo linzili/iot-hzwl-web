@@ -7,8 +7,8 @@ export type AccountLogin = {
   password: string
   captcha: string
   sessionId: string
-  hostname: string
+  tenantId: number
 }
 export const getCapachaApi = () => defHttp.get<Captcha>(`${prefix}/captcha`)
 
-export const accountLoginApi = (data: AccountLogin) => defHttp.post(`${prefix}/account-login`, data)
+export const accountLoginApi = (data: AccountLogin) => defHttp.post<any>(`${prefix}/account-login`, data)

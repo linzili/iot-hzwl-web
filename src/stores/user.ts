@@ -14,6 +14,7 @@ export const useUserStore = defineStore('user', () => {
     }
     return userSimpleList
   }
+
   return {
     userSimpleList,
     getUserSimpleListAction,

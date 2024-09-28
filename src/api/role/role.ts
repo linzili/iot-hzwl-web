@@ -10,3 +10,5 @@ export const deleteRoleApi = (id: number) => defHttp.delete<boolean>(`${prefix}/
 export const editRoleApi = (data: Role) => defHttp.put<boolean>(`${prefix}`, data)
 export const newRoleApi = (data: Role) => defHttp.post<number>(`${prefix}`, data)
 export const getSimpleRoleListApi = () => defHttp.get<SimpleRole[]>(`${prefix}/list-all-simple`)
+
+export const getSimpleRoleListByUserIdApi = (userId: number) => defHttp.get<SimpleRole[]>(`${prefix}/user/${userId}/list`)

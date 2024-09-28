@@ -101,6 +101,14 @@ const routes: RouteRecordRaw[] = [
             }
           },
           {
+            path: 'menu',
+            name: 'Menu',
+            component: () => import('@/views/system/menu/Menu.vue'),
+            meta: {
+              title: '菜单管理'
+            }
+          },
+          {
             path: 'dict',
             name: 'Dict',
             component: () => import('@/views/system/dict/Dict.vue'),
@@ -139,8 +147,15 @@ const router = createRouter({
 })
 
 const title = useTitle()
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
+  const loginStore = useLoginStore()
+  const token = loginStore.token
+  if (to.path !== '/login' && !token) {
+    return `/login?redirect=${to.fullPath}`
+  } else if (to.path === '/login' && token) {
+    return from.path
+  }
+
   title.value = (to.meta.title + ' - ' + import.meta.env.VITE_APP_TITLE) as string
-  next()
 })
 export default router
